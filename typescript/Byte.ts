@@ -1,13 +1,21 @@
 export class Byte {
-    value: number;
+    value: string;
+    size: number = 0;
   
-    constructor(value: number) {
+    constructor(value: number, size: number) {
       let temp: string = value.toString(2);
-      this.value = +temp;
-    }
-  
-    GetValue(){
-        return this.value;
+      if(size === null || size < temp.length){
+          this.size = temp.length;
+      }
+      else{
+          this.size = size;
+      }
+
+      let dsize: number = size - temp.length
+      for(let i = 0; i < dsize; i++){
+        temp = '0' + temp;
+      }
+      this.value = temp;
     }
 
     GetValueDec(){
@@ -22,7 +30,7 @@ export class Byte {
     }
 
     GetValueString(){
-        return this.value.toString();
+        return this.value;
     }
 
   }
@@ -30,7 +38,7 @@ export class Byte {
 
 
 export function XOR(a: Byte, b: Byte){
-    let max: number = Math.max(a.GetValue(), b.GetValue()).toString().length;
+    let max: number = Math.max(a.size, b.size);
     let result: string = "";
     for(let i: number = 0; i < max; i++){
         let temp: number;

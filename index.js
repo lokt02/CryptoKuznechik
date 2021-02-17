@@ -2,8 +2,9 @@
 exports.__esModule = true;
 var Byte_1 = require("./Byte");
 var Byte_2 = require("./Byte");
-var a = new Byte_1.Byte(5);
-console.log(a.GetValue() + " " + a.GetValueDec());
-var b = new Byte_1.Byte(7);
+var a = new Byte_1.Byte(5, 8);
+console.log(a.GetValueString() + " " + a.GetValueDec());
+var b = new Byte_1.Byte(7, 8);
+console.log(b.GetValueString() + " " + b.GetValueDec());
 var res = Byte_2.XOR(a, b);
 console.log(res);
