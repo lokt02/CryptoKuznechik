@@ -14,6 +14,8 @@ var Polynom = /** @class */ (function () {
     }
     ;
     Polynom.prototype.Mult = function (pol) {
+        this.power = this.koef.length - 1;
+        pol.power = pol.koef.length - 1;
         var newPolinom = new Polynom(this.power + pol.power, []);
         for (var i = 0; i < this.power + pol.power + 1; i++) {
             newPolinom.koef.push(0);
@@ -57,8 +59,6 @@ var Polynom = /** @class */ (function () {
             else
                 newPol.koef[i] = this.koef[i + 1];
         }
-        console.log(newPol);
-        console.log("pol = ", pol);
         return newPol.Mod(pol);
     };
     return Polynom;

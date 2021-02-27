@@ -11,6 +11,8 @@ export class Polynom {
     };
 
     Mult(pol: Polynom){
+        this.power = this.koef.length - 1;
+        pol.power = pol.koef.length - 1;
         let newPolinom = new Polynom(this.power + pol.power,
             []);
         for(let i:number = 0; i < this.power + pol.power + 1; i++){
@@ -56,8 +58,6 @@ export class Polynom {
             else 
                 newPol.koef[i] = this.koef[i + 1];
         }
-        console.log(newPol);
-        console.log("pol = " ,pol);
         return newPol.Mod(pol);
     }
 }
