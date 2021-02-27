@@ -62,7 +62,7 @@ export class Polynom {
     }
 }
 
-function CopyMas(mas: number[]):number[]{
+export function CopyMas(mas: number[]):number[]{
     let tempMas: number[] = [];
     for(var i = 0; i < mas.length; i++){
         tempMas.push(mas[i]);

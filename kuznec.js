@@ -6,6 +6,7 @@ var polynom_1 = require("./polynom");
 var constants = [1, 148, 32, 133, 16, 194,
     192, 1, 251, 1, 192, 194, 16, 133,
     32, 148];
+// let powerOfTwo = {};
 function GaloisMult(value, multiplicator) {
     // let result:number = 0;
     var tempVal = value.toString(2);
@@ -33,46 +34,40 @@ function GaloisMult(value, multiplicator) {
     // }
     return res;
 }
-function BitPush(value, valueToPush) {
-    value.slice(0, 1);
-    value.push(valueToPush);
-    return value;
-}
+// function Rebuild(array:number[], elNum: number){
+//     return ;
+// }
 var Kuznec = /** @class */ (function () {
     function Kuznec() {
     }
     ;
-    Kuznec.prototype.L = function (value) {
-        console.log(GaloisMult(1, 148).toString(16));
-        var hexValue = uint32.toHex(value, 2);
-        var hexValues = ["0x" + hexValue, '0x00', '0x00', '0x00', '0x00', '0x00', '0x00',
-            '0x00', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00'];
-        var res = [];
-        var val = 0;
-        for (var j = 0; j < 16; j++) {
-            val = 0;
-            for (var i = 0; i <= 15; i++) {
-                var temp = parseInt(hexValues[i], 16);
-                if (isNaN(temp)) {
-                    temp = 0;
-                }
-                if (temp == 1 && constants[i] == 148) {
-                    console.log(i, j, val);
-                }
-                val += GaloisMult(temp, constants[i]);
-                // if(val === 2){
-                //     console.log(i, j, hexValues[i], constants[i], val, GaloisMult(parseInt(hexValues[i], 16), constants[i]));
-                // }
-            }
-            var strVal = (val % 255).toString(16);
-            if (strVal.length < 2) {
-                strVal = "0" + strVal;
-            }
-            res = BitPush(res, "0x" + strVal);
-            hexValues = res;
+    Kuznec.prototype.L = function (bytes) {
+        console.log(GaloisMult(1, 1));
+        console.log(GaloisMult(1, 148));
+        console.log(GaloisMult(148, 148));
+        console.log(GaloisMult(1, 32));
+        console.log(uint32.xor(GaloisMult(148, 148), GaloisMult(1, 32)));
+        console.log(uint32.xor(GaloisMult(1, 148), GaloisMult(1, 1)));
+        while (bytes.length < 16) {
+            bytes.push(0);
         }
-        console.log(res);
-        return hexValues;
+        var result = [];
+        for (var j = 0; j < 16; j++) {
+            var value = 0;
+            for (var i = 0; i < bytes.length; i++) {
+                //if(constants[i] === undefined) {console.log(constants, i, bytes); return;}
+                value = (value ^ GaloisMult(bytes[i], constants[i])) % 255;
+                // if(value < 0 || value > 500) console.log(bytes[i], constants[i]);
+                //console.log(result[j], bytes[i], constants[i], GaloisMult(bytes[i], constants[i]));
+            }
+            result.push(value);
+            bytes = polynom_1.CopyMas(result);
+            while (bytes.length < 16) {
+                bytes.unshift(0);
+            }
+            //console.log("##########################");
+        }
+        return result;
     };
     return Kuznec;
 }());

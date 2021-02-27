@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.Polynom = void 0;
+exports.CopyMas = exports.Polynom = void 0;
 var Polynom = /** @class */ (function () {
     function Polynom(power, koef) {
         this.koef = CopyMas(koef);
@@ -71,3 +71,4 @@ function CopyMas(mas) {
     }
     return tempMas;
 }
+exports.CopyMas = CopyMas;

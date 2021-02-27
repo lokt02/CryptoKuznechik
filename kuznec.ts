@@ -1,9 +1,11 @@
 import uint32 = require('uint32');
-import {Polynom} from './polynom';
+import {Polynom, CopyMas} from './polynom';
 
 let constants:number[] = [1, 148, 32, 133, 16, 194,
      192, 1, 251, 1, 192, 194, 16, 133,
       32, 148]
+
+// let powerOfTwo = {};
 
 function GaloisMult(value:number, multiplicator:number){
     // let result:number = 0;
@@ -33,49 +35,33 @@ function GaloisMult(value:number, multiplicator:number){
     return res;
 }
 
-function BitPush(value:string[], valueToPush:string){
-    value.slice(0, 1);
-    value.push(valueToPush);
-    return value;
-}
+// function Rebuild(array:number[], elNum: number){
+    
+//     return ;
+// }
 
 export class Kuznec{
     constructor(){
 
     };
 
-    L (value: number){
-        console.log(GaloisMult(1, 148).toString(16));
-        let hexValue: string= uint32.toHex(value, 2);
-        let hexValues = ["0x" + hexValue, '0x00', '0x00', '0x00', '0x00', '0x00', '0x00',
-         '0x00', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00'];
-        let res: string[] = [];
-        let val: number = 0;
-        for(let j:number = 0; j < 16; j++){
-            val = 0;
-            for(let i:number = 0; i <= 15; i++){
-                let temp = parseInt(hexValues[i], 16);
-                if(isNaN(temp)){
-                    temp = 0;
-                }
-                if(temp == 1 && constants[i] == 148){
-                    console.log(i, j, val);
-                }
-                val += GaloisMult(temp, constants[i]);
-                // if(val === 2){
-                //     console.log(i, j, hexValues[i], constants[i], val, GaloisMult(parseInt(hexValues[i], 16), constants[i]));
-                // }
-            }
-            let strVal:string = (val % 255).toString(16);
-            if(strVal.length < 2){
-                strVal = "0" + strVal;
-            }
-            res = BitPush(res,  "0x" + strVal);
-            
-            hexValues = res;
+    L (bytes: number[]){
+        while(bytes.length < 16){
+            bytes.push(0);
         }
-        console.log(res);
-
-        return hexValues;
+        let result: number[] = [];
+        for(let j = 0; j < 16; j++){
+            let value = 0;
+            for(let i = 0; i < bytes.length; i++){
+                value = uint32.xor( value , GaloisMult(bytes[i], constants[i]));
+            }
+            result.push(value);
+            bytes = CopyMas(result);
+            while(bytes.length < 16){
+                bytes.unshift(0);
+            }
+            //console.log("##########################");
+        }
+        return result;
     }
 }
