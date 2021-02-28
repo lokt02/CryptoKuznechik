@@ -8,7 +8,7 @@ let constants:number[] = [1, 148, 32, 133, 16, 194,
 
 // let powerOfTwo = {};
 
-function GaloisMult(value:number, multiplicator:number){
+/*function GaloisMult(value:number, multiplicator:number){
     // let result:number = 0;
     let tempVal = value.toString(2);
     let tempMult = multiplicator.toString(2);
@@ -37,14 +37,14 @@ function GaloisMult(value:number, multiplicator:number){
     //     res = uint32.xor(res, 195);
     // }
     return res;
-}
+}*/
 
 // function Rebuild(array:number[], elNum: number){
     
 //     return ;
 // }
 
-function GaloisMultTabl(value1:number, value2:number){
+function GaloisMultTabl(value1:number, value2:number){//Умножение Галуа с помощю таблицы
     if(value1 === 0 || value2 === 0) return 0;
     let p1 = tab1.indexOf(value1);
     let p2 = tab1.indexOf(value2);
@@ -60,7 +60,7 @@ export class Kuznec{
     constructor(){
 
     };
-
+//ЛИНЕЙНОЕ ПРЕОБРАЗОВАНИЕ
     L (bytes: number[]){
         // console.log(GaloisMultTabl(0, 148)); return;
         while(bytes.length < 16){
@@ -68,23 +68,23 @@ export class Kuznec{
         }
         let result: number[] = [];
         for(let j = 0; j < 16; j++){
-            let value = 0;
+            let value = 0;//Значение, которое будет дописываться в а15
             for(let i = 0; i < bytes.length; i++){
-                let gm = GaloisMultTabl(bytes[i], constants[i]);
+                let gm = GaloisMultTabl(bytes[i], constants[i]);//Результат перемножениябайта и элемента таблицы линейных преобразований.
                 // value = uint32.xor( value , GaloisMult(bytes[i], constants[i]));
                 // console.log(value, gm)
-                value = uint32.xor( value , gm);
+                value = uint32.xor( value , gm);//ксор для получения результата, который будет записан в a15
                 // console.log(value)
                 // console.log('######################')
             }
             // return;
-            result.push(value);
-            bytes = CopyMas(result);
+            result.push(value);//добавление в конец массива значения
+            bytes = CopyMas(result);//Копирование массива 
             while(bytes.length < 16){
-                bytes.unshift(0);
+                bytes.unshift(0);//Добавление нулей в начало
             }
             //console.log("##########################");
         }
-        return result;
+        return result;//результат линейного преобразования
     }
 }
