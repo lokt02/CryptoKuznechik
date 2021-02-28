@@ -77,4 +77,14 @@ export class Kuznec{
         }
         return result;//результат линейного преобразования
     }
+    S (bytes: number[]){
+    while(bytes.length < 16){
+        bytes.push(0);
+    }
+    let result: number[]=[];
+    for(let i:number=0; i<16;i++){
+        result[i]=tabl_notlin[bytes[i]];
+    }
+    return result;
+}
 }
