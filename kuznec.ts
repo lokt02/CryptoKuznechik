@@ -6,7 +6,7 @@ let constants:number[] = [1, 148, 32, 133, 16, 194,
      192, 1, 251, 1, 192, 194, 16, 133,
       32, 148]
 
-// let powerOfTwo = {};
+
 
 /*function GaloisMult(value:number, multiplicator:number){
     // let result:number = 0;
@@ -39,19 +39,11 @@ let constants:number[] = [1, 148, 32, 133, 16, 194,
     return res;
 }*/
 
-// function Rebuild(array:number[], elNum: number){
-    
-//     return ;
-// }
 
 function GaloisMultTabl(value1:number, value2:number){//Умножение Галуа с помощю таблицы
     if(value1 === 0 || value2 === 0) return 0;
     let p1 = tab1.indexOf(value1);
     let p2 = tab1.indexOf(value2);
-    // console.log(p1, p2);
-    // console.log((p1 + p2));
-    // console.log((p1 + p2) % tab1.length);
-    // console.log(tab1[(p1 + p2) % tab1.length]);
     let gm = tab1[(p1 + p2) % tab1.length]
     return gm;
 }
@@ -62,7 +54,7 @@ export class Kuznec{
     };
 //ЛИНЕЙНОЕ ПРЕОБРАЗОВАНИЕ
     L (bytes: number[]){
-        // console.log(GaloisMultTabl(0, 148)); return;
+        
         while(bytes.length < 16){
             bytes.push(0);
         }
@@ -71,11 +63,9 @@ export class Kuznec{
             let value = 0;//Значение, которое будет дописываться в а15
             for(let i = 0; i < bytes.length; i++){
                 let gm = GaloisMultTabl(bytes[i], constants[i]);//Результат перемножениябайта и элемента таблицы линейных преобразований.
-                // value = uint32.xor( value , GaloisMult(bytes[i], constants[i]));
-                // console.log(value, gm)
+                
                 value = uint32.xor( value , gm);//ксор для получения результата, который будет записан в a15
-                // console.log(value)
-                // console.log('######################')
+                
             }
             // return;
             result.push(value);//добавление в конец массива значения
@@ -83,7 +73,7 @@ export class Kuznec{
             while(bytes.length < 16){
                 bytes.unshift(0);//Добавление нулей в начало
             }
-            //console.log("##########################");
+
         }
         return result;//результат линейного преобразования
     }
