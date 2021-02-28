@@ -1,7 +1,7 @@
 import uint32 = require('uint32');
 import {Polynom, CopyMas} from './polynom';
 import {tab1} from './Tabl1';
-
+import {tabl_notlin} from './Tabl_notlin';
 let constants:number[] = [1, 148, 32, 133, 16, 194,
      192, 1, 251, 1, 192, 194, 16, 133,
       32, 148]
