@@ -28,6 +28,8 @@ var Polynom = /** @class */ (function () {
         return newPolinom;
     };
     Polynom.prototype.Mod = function (pol) {
+        this.power = this.koef.length - 1;
+        pol.power = pol.koef.length - 1;
         // console.log("pol = " ,pol);
         var polyCopy = new Polynom(pol.power, pol.koef);
         // console.log("polCop = " ,polyCopy);

@@ -3,6 +3,7 @@ exports.__esModule = true;
 exports.Kuznec = void 0;
 var uint32 = require("uint32");
 var polynom_1 = require("./polynom");
+var Tabl1_1 = require("./Tabl1");
 var constants = [1, 148, 32, 133, 16, 194,
     192, 1, 251, 1, 192, 194, 16, 133,
     32, 148];
@@ -25,7 +26,10 @@ function GaloisMult(value, multiplicator) {
     for (var i = 0; i < result.koef.length; i++) {
         result.koef[i] = result.koef[i] % 2;
     }
+    // console.log(result.koef)
     result = result.Mod(new polynom_1.Polynom(0, [1, 1, 1, 0, 0, 0, 0, 1, 1]));
+    // console.log(result.koef)
+    // console.log('##########')
     for (var i = 0; i < result.koef.length; i++) {
         res += result.koef[i] * Math.pow(2, (result.koef.length - 1 - i));
     }
@@ -37,17 +41,24 @@ function GaloisMult(value, multiplicator) {
 // function Rebuild(array:number[], elNum: number){
 //     return ;
 // }
+function GaloisMultTabl(value1, value2) {
+    if (value1 === 0 || value2 === 0)
+        return 0;
+    var p1 = Tabl1_1.tab1.indexOf(value1);
+    var p2 = Tabl1_1.tab1.indexOf(value2);
+    // console.log(p1, p2);
+    // console.log((p1 + p2));
+    // console.log((p1 + p2) % tab1.length);
+    // console.log(tab1[(p1 + p2) % tab1.length]);
+    var gm = Tabl1_1.tab1[(p1 + p2) % Tabl1_1.tab1.length];
+    return gm;
+}
 var Kuznec = /** @class */ (function () {
     function Kuznec() {
     }
     ;
     Kuznec.prototype.L = function (bytes) {
-        console.log(GaloisMult(1, 1));
-        console.log(GaloisMult(1, 148));
-        console.log(GaloisMult(148, 148));
-        console.log(GaloisMult(1, 32));
-        console.log(uint32.xor(GaloisMult(148, 148), GaloisMult(1, 32)));
-        console.log(uint32.xor(GaloisMult(1, 148), GaloisMult(1, 1)));
+        // console.log(GaloisMultTabl(0, 148)); return;
         while (bytes.length < 16) {
             bytes.push(0);
         }
@@ -55,11 +66,14 @@ var Kuznec = /** @class */ (function () {
         for (var j = 0; j < 16; j++) {
             var value = 0;
             for (var i = 0; i < bytes.length; i++) {
-                //if(constants[i] === undefined) {console.log(constants, i, bytes); return;}
-                value = (value ^ GaloisMult(bytes[i], constants[i])) % 255;
-                // if(value < 0 || value > 500) console.log(bytes[i], constants[i]);
-                //console.log(result[j], bytes[i], constants[i], GaloisMult(bytes[i], constants[i]));
+                var gm = GaloisMultTabl(bytes[i], constants[i]);
+                // value = uint32.xor( value , GaloisMult(bytes[i], constants[i]));
+                // console.log(value, gm)
+                value = uint32.xor(value, gm);
+                // console.log(value)
+                // console.log('######################')
             }
+            // return;
             result.push(value);
             bytes = polynom_1.CopyMas(result);
             while (bytes.length < 16) {

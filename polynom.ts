@@ -27,6 +27,8 @@ export class Polynom {
     }
 
     Mod(pol: Polynom){
+        this.power = this.koef.length - 1;
+        pol.power = pol.koef.length - 1;
         // console.log("pol = " ,pol);
         let polyCopy = new Polynom(pol.power, pol.koef);
         // console.log("polCop = " ,polyCopy);
