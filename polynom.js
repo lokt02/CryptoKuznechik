@@ -8,31 +8,30 @@ var Polynom = /** @class */ (function () {
             this.power = power;
         else
             this.power = koef.length - 1;
-        // console.log(power);
-        // console.log(this.power);
-        // console.log(this);
     }
     ;
+    //Умножение полинома на полином
     Polynom.prototype.Mult = function (pol) {
         this.power = this.koef.length - 1;
         pol.power = pol.koef.length - 1;
-        var newPolinom = new Polynom(this.power + pol.power, []);
-        for (var i = 0; i < this.power + pol.power + 1; i++) {
+        var newPolinom = new Polynom(this.power + pol.power, //результирующий полином
+        []);
+        for (var i = 0; i < this.power + pol.power + 1; i++) { //заполнение полинома нулями
             newPolinom.koef.push(0);
         }
         for (var i = 0; i < this.power + 1; i++) {
             for (var j = 0; j < pol.power + 1; j++) {
+                //Перемножение происходит с помощью прибавления к коэфицентам результата произведений коэфицентов 
                 newPolinom.koef[i + j] += (this.koef[i] * pol.koef[j]);
             }
         }
         return newPolinom;
     };
+    //ОСТАТОК ОТ ДЕЛЕНИЯ ПОЛИНОМОВ
     Polynom.prototype.Mod = function (pol) {
         this.power = this.koef.length - 1;
         pol.power = pol.koef.length - 1;
-        // console.log("pol = " ,pol);
         var polyCopy = new Polynom(pol.power, pol.koef);
-        // console.log("polCop = " ,polyCopy);
         if (this.power < polyCopy.power) {
             return this;
         }
@@ -44,10 +43,7 @@ var Polynom = /** @class */ (function () {
         var temp = this.koef[0] / polyCopy.koef[0];
         while (iter < polyCopy.koef.length) {
             if (this.koef[0] != 0) {
-                // console.log(this.koef[0]);
-                // console.log(this.koef[0]/polyCopy.koef[0]);
                 polyCopy.koef[iter] *= temp;
-                // console.log("pol = " ,pol);
                 iter++;
             }
             else {
@@ -55,7 +51,6 @@ var Polynom = /** @class */ (function () {
             }
         }
         for (var i = 0; i < this.power; i++) {
-            // console.log(this.koef[i + 1], polyCopy.koef[i + 1]);
             if (!isNaN(polyCopy.koef[i]) && polyCopy.koef[i + 1] != undefined)
                 newPol.koef[i] = this.koef[i + 1] - polyCopy.koef[i + 1];
             else
@@ -66,6 +61,7 @@ var Polynom = /** @class */ (function () {
     return Polynom;
 }());
 exports.Polynom = Polynom;
+//Копирование массива происходит именно таким оразом потому что при обычном присваивании передаются указатели.
 function CopyMas(mas) {
     var tempMas = [];
     for (var i = 0; i < mas.length; i++) {

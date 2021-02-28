@@ -48,10 +48,86 @@ function GaloisMultTabl(value1:number, value2:number){//Умножение Га�
     return gm;
 }
 
-export class Kuznec{
-    constructor(){
+function HexOutput(array: number[]){
+    let temp = ""
+    for(let i = 0; i < array.length; i++){
+        temp += array[i].toString(16) + " ";
+    }
+    console.log(temp);
+}
 
+export class Kuznec{
+    C: number[][];
+    iterKey: number[][];
+
+    constructor(){
+        this.iterKey = [];
+        // for(let i = 0; i < 10; i++){
+        //     this.iterKey.push([]);
+        //     for(let j = 0; j < 64; j++){
+        //         this.iterKey[i].push(0);
+        //     }
+        // }
     };
+
+    ConstGen(){
+        this.C = [];
+        for(let i = 1; i <= 32; i++){
+            this.C.push(this.L([i]));
+        }
+        for(let i = 0; i < this.C.length; i++){
+            HexOutput(this.C[i]);
+        }
+        console.log("VVVVVVVVVVVVVVVVVVVVVVVV");
+        return this.C;
+    }
+
+    GOSTF(key1: number[], key2:number[], iter_const: number[]){
+        let internal: number[] = [];
+        let outKey2 = CopyMas(key1);
+        for(let i = 0; i < iter_const.length; i++){
+            internal.push(uint32.xor(key1, iter_const));
+        }
+        internal = this.L( this.S(internal));
+        // internal = this.L(internal);
+
+        let outKey1: number[] = [];
+        for(let i = 0; i < key2.length; i++)
+            outKey1.push(uint32.xor(internal[i], key2[i]));
+        
+        let key: number[][] = [];
+        key.push(outKey1);
+        key.push(outKey2);
+        return key;
+    }
+
+    KeyGen(key1: number[], key2: number[]){
+        let i: number;
+
+        let iter12: number[][] = [[], []];
+        let iter34: number[][] = [[], []];
+        this.iterKey[0] = CopyMas(key1);
+        this.iterKey[1] = CopyMas(key2);
+        iter12[0] = CopyMas(key1);
+        iter12[1] = CopyMas(key2);
+
+        for(i = 0; i < 4; i++){
+            for(let j = 0; j < 8; j +=2 ){
+                iter34 = this.GOSTF(iter12[0], iter12[1], this.C[j + 8*i]);
+                iter12 = this.GOSTF(iter34[0], iter34[1], this.C[j + 1 + 8*i]);
+            }
+
+            this.iterKey[2 * i + 2] = CopyMas(iter12[0]);
+            this.iterKey[2 * i + 3] = CopyMas(iter12[1]);
+        }
+
+        for(let j = 0; j < 10; j++){
+            HexOutput(this.iterKey[j]);
+        }
+
+        return this.iterKey;
+    }
+
 //ЛИНЕЙНОЕ ПРЕОБРАЗОВАНИЕ
     L (bytes: number[]){
         
