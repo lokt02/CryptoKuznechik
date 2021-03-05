@@ -53,7 +53,7 @@ function HexOutput(array: number[]){
     for(let i = 0; i < array.length; i++){
         temp += array[i].toString(16) + " ";
     }
-    console.log(temp);
+    return temp;
 }
 
 export class Kuznec{
@@ -122,8 +122,13 @@ export class Kuznec{
         }
 
         for(let j = 0; j < 10; j++){
-            HexOutput(this.iterKey[j]);
-        }
+            let temp:string = HexOutput(this.iterKey[j]);
+            console.log(this.iterKey[j]);
+            console.log(HexInput(temp));
+            console.log("##########################");
+            }
+
+        
 
         return this.iterKey;
     }
@@ -164,3 +169,49 @@ export class Kuznec{
     return result;
 }
 }
+function HexInput(byte:string){
+
+    //let j:number = 0;
+    let byte_num: number[]=[];
+    // Дописанная часть с тообой
+    let temp:string[] = byte.split(' ');
+    for(let k:number=0;k<temp.length;k++){
+    if(temp[k].length < 2){
+    temp[k] = "0" + temp[k];
+    }
+    }
+    console.log("Темп",temp);
+    byte = temp.join('');
+    console.log("Байт",byte);
+    //сам
+    for(let i:number=0;i<32;++i){
+    
+    let B1: number=0;
+    if(byte[i]=="a") B1=10;
+    if(byte[i]=="b") B1=11;
+    if(byte[i]=="c") B1=12;
+    if(byte[i]=="d") B1=13;
+    if(byte[i]=="e") B1=14;
+    if(byte[i]=="f") B1=15;
+    
+    if(byte[i]!="a" && byte[i]!="b" && byte[i]!="c" && byte[i]!="d" && byte[i]!="e" && byte[i]!="f"){
+    B1= +byte[i];
+    };
+    i++;
+    let B2: number=0;
+    if(byte[i]=="a") B2=10;
+    if(byte[i]=="b") B2=11;
+    if(byte[i]=="c") B2=12;
+    if(byte[i]=="d") B2=13;
+    if(byte[i]=="e") B2=14;
+    if(byte[i]=="f") B2=15;
+    
+    if(byte[i]!="a" && byte[i]!="b" && byte[i]!="c" && byte[i]!="d" && byte[i]!="e" && byte[i]!="f"){
+    B2= +byte[i];
+    };
+    
+    let B_s:number;
+    B_s=16*B1+B2;
+    byte_num.push(B_s);
+    }
+    return(byte_num);}
