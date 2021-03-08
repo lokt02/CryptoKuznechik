@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.Kuznec = void 0;
+exports.HexInput = exports.Kuznec = exports.HexOutput = void 0;
 var uint32 = require("uint32");
 var polynom_1 = require("./polynom");
 var Tabl1_1 = require("./Tabl1");
@@ -51,8 +51,9 @@ function HexOutput(array) {
     for (var i = 0; i < array.length; i++) {
         temp += array[i].toString(16) + " ";
     }
-    console.log(temp);
+    return temp;
 }
+exports.HexOutput = HexOutput;
 var Kuznec = /** @class */ (function () {
     function Kuznec() {
         this.iterKey = [];
@@ -64,15 +65,28 @@ var Kuznec = /** @class */ (function () {
         // }
     }
     ;
+    Kuznec.prototype.XSL = function (plainText, j) {
+        for (var i = 0; i < plainText.length; i++) {
+            plainText[i] = uint32.xor(plainText[i], this.iterKey[j][i]);
+        }
+        plainText = this.S(plainText);
+        plainText = this.L(plainText);
+        return plainText;
+    };
+    Kuznec.prototype.Encryption = function (plainText) {
+        for (var i = 0; i < this.iterKey.length; i++) {
+            plainText = this.XSL(plainText, i);
+        }
+        return plainText;
+    };
     Kuznec.prototype.ConstGen = function () {
         this.C = [];
         for (var i = 1; i <= 32; i++) {
             this.C.push(this.L([i]));
         }
-        for (var i = 0; i < this.C.length; i++) {
-            HexOutput(this.C[i]);
-        }
-        console.log("VVVVVVVVVVVVVVVVVVVVVVVV");
+        // for(let i = 0; i < this.C.length; i++){
+        //     HexOutput(this.C[i]);
+        // }
         return this.C;
     };
     Kuznec.prototype.GOSTF = function (key1, key2, iter_const) {
@@ -107,9 +121,13 @@ var Kuznec = /** @class */ (function () {
             this.iterKey[2 * i + 2] = polynom_1.CopyMas(iter12[0]);
             this.iterKey[2 * i + 3] = polynom_1.CopyMas(iter12[1]);
         }
-        for (var j = 0; j < 10; j++) {
-            HexOutput(this.iterKey[j]);
-        }
+        // for(let j = 0; j < 10; j++){
+        //     let temp:string = HexOutput(this.iterKey[j]);
+        //     console.log(temp);
+        //     console.log(this.iterKey[j]);
+        //     console.log(HexInput(temp));
+        //     console.log("##########################");
+        //     }
         return this.iterKey;
     };
     //ЛИНЕЙНОЕ ПРЕОБРАЗОВАНИЕ
@@ -146,3 +164,58 @@ var Kuznec = /** @class */ (function () {
     return Kuznec;
 }());
 exports.Kuznec = Kuznec;
+function HexInput(byte) {
+    //let j:number = 0;
+    var byte_num = [];
+    // Дописанная часть с тообой
+    var temp = byte.split(' ');
+    for (var k = 0; k < temp.length; k++) {
+        if (temp[k].length < 2) {
+            temp[k] = "0" + temp[k];
+        }
+    }
+    byte = temp.join('');
+    //сам
+    for (var i = 0; i < 32; ++i) {
+        var B1 = 0;
+        if (byte[i] == "a")
+            B1 = 10;
+        if (byte[i] == "b")
+            B1 = 11;
+        if (byte[i] == "c")
+            B1 = 12;
+        if (byte[i] == "d")
+            B1 = 13;
+        if (byte[i] == "e")
+            B1 = 14;
+        if (byte[i] == "f")
+            B1 = 15;
+        if (byte[i] != "a" && byte[i] != "b" && byte[i] != "c" && byte[i] != "d" && byte[i] != "e" && byte[i] != "f") {
+            B1 = +byte[i];
+        }
+        ;
+        i++;
+        var B2 = 0;
+        if (byte[i] == "a")
+            B2 = 10;
+        if (byte[i] == "b")
+            B2 = 11;
+        if (byte[i] == "c")
+            B2 = 12;
+        if (byte[i] == "d")
+            B2 = 13;
+        if (byte[i] == "e")
+            B2 = 14;
+        if (byte[i] == "f")
+            B2 = 15;
+        if (byte[i] != "a" && byte[i] != "b" && byte[i] != "c" && byte[i] != "d" && byte[i] != "e" && byte[i] != "f") {
+            B2 = +byte[i];
+        }
+        ;
+        var B_s = void 0;
+        B_s = 16 * B1 + B2;
+        byte_num.push(B_s);
+    }
+    return (byte_num);
+}
+exports.HexInput = HexInput;

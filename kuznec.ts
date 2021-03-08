@@ -48,7 +48,7 @@ function GaloisMultTabl(value1:number, value2:number){//Умножение Га�
     return gm;
 }
 
-function HexOutput(array: number[]){
+export function HexOutput(array: number[]){
     let temp = ""
     for(let i = 0; i < array.length; i++){
         temp += array[i].toString(16) + " ";
@@ -70,15 +70,30 @@ export class Kuznec{
         // }
     };
 
+    XSL(plainText: number[], j: number){
+        for(let i = 0; i <plainText.length; i++){
+            plainText[i] = uint32.xor( plainText[i] , this.iterKey[j][i]);
+        }
+        plainText = this.S(plainText);
+        plainText = this.L(plainText);
+        return plainText;
+    }
+
+    Encryption(plainText : number[]){
+        for(let i = 0; i < this.iterKey.length; i++){
+            plainText = this.XSL(plainText, i);
+        }
+        return plainText;
+    }
+
     ConstGen(){
         this.C = [];
         for(let i = 1; i <= 32; i++){
             this.C.push(this.L([i]));
         }
-        for(let i = 0; i < this.C.length; i++){
-            HexOutput(this.C[i]);
-        }
-        console.log("VVVVVVVVVVVVVVVVVVVVVVVV");
+        // for(let i = 0; i < this.C.length; i++){
+        //     HexOutput(this.C[i]);
+        // }
         return this.C;
     }
 
@@ -121,12 +136,13 @@ export class Kuznec{
             this.iterKey[2 * i + 3] = CopyMas(iter12[1]);
         }
 
-        for(let j = 0; j < 10; j++){
-            let temp:string = HexOutput(this.iterKey[j]);
-            console.log(this.iterKey[j]);
-            console.log(HexInput(temp));
-            console.log("##########################");
-            }
+        // for(let j = 0; j < 10; j++){
+        //     let temp:string = HexOutput(this.iterKey[j]);
+        //     console.log(temp);
+        //     console.log(this.iterKey[j]);
+        //     console.log(HexInput(temp));
+        //     console.log("##########################");
+        //     }
 
         
 
@@ -169,20 +185,18 @@ export class Kuznec{
     return result;
 }
 }
-function HexInput(byte:string){
+export function HexInput(byte:string){
 
     //let j:number = 0;
     let byte_num: number[]=[];
     // Дописанная часть с тообой
     let temp:string[] = byte.split(' ');
     for(let k:number=0;k<temp.length;k++){
-    if(temp[k].length < 2){
-    temp[k] = "0" + temp[k];
+        if(temp[k].length < 2){
+            temp[k] = "0" + temp[k];    
+        }
     }
-    }
-    console.log("Темп",temp);
     byte = temp.join('');
-    console.log("Байт",byte);
     //сам
     for(let i:number=0;i<32;++i){
     
