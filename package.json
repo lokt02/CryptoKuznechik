@@ -12,7 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "ck"
+    "test": "ck",
+    "start": "ts-node index.ts"
   },
   "repository": {
     "type": "git",
