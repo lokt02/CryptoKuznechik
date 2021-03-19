@@ -1,7 +1,9 @@
 import {Kuznec, HexInput, HexOutput} from "./kuznec";
 
+const kuznec = new Kuznec();
+
 describe("Xor testing", () => {
-    const kuznec = new Kuznec();
+    
     test("XOR should be correct", ()=>{
         expect(kuznec.XOR(1, 1)).toBe(0);
         expect(kuznec.XOR(1, 2)).toBe(3);
