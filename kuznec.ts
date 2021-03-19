@@ -79,6 +79,10 @@ export class Kuznec{
         return plainText;
     }
 
+    XOR(a: number, b: number){
+        return uint32.xor(a , b);
+    }
+
     Encryption(plainText : number[]){
         for(let i = 0; i < this.iterKey.length; i++){
             plainText = this.XSL(plainText, i);
