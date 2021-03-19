@@ -34,10 +34,10 @@ describe("NotLinear transformation test", ()=>{
 
     test("Is NLT works corresctly", ()=>{
         expect(kuznec.S([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])).toStrictEqual([
-            238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 213, 35, 197, 4, 77, 233
+            238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 218, 35, 197, 4, 77, 233
         ]);
         expect(kuznec.S([0])).toStrictEqual(HexInput("FC"));
-        expect(kuznec.S([18])).toStrictEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138]);
+        expect(kuznec.S([118])).toStrictEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138]);
     })
 
 })
