@@ -15,4 +15,11 @@ let temp = kuz.Encryption(
 console.log(
     HexOutput(temp)
 );
+
+let temp1 = kuz.Decryption(
+    temp
+);
+console.log(
+    HexOutput(temp1)
+);
 // console.log(kuz.iterKey);
