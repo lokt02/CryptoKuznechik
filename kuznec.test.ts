@@ -38,6 +38,14 @@ describe("NotLinear transformation test", ()=>{
         ]);
         expect(kuznec.S([0])).toStrictEqual(HexInput("FC"));
         expect(kuznec.S([118])).toStrictEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138]);
+        expect(kuznec.S(HexInput("ffeeddccbbaa99881122334455667700")))
+        .toStrictEqual(HexInput("b66cd8887d38e8d77765aeea0c9a7efc"));
+        expect(kuznec.S(HexInput("b66cd8887d38e8d77765aeea0c9a7efc")))
+        .toStrictEqual(HexInput("559d8dd7bd06cbfe7e7b262523280d39"));
+        expect(kuznec.S(HexInput("559d8dd7bd06cbfe7e7b262523280d39")))
+        .toStrictEqual(HexInput("0c3322fed531e4630d80ef5c5a81c50b"));
+        expect(kuznec.S(HexInput("0c3322fed531e4630d80ef5c5a81c50b")))
+        .toStrictEqual(HexInput("23ae65633f842d29c5df529c13f5acda"));
     })
 
 })
@@ -48,6 +56,21 @@ describe("Galois multiplication test", ()=>{
         expect(kuznec.GaloisMultTabl(5, 7)).toBe(27);
         expect(kuznec.GaloisMultTabl(5, 5)).toBe(17);
         expect(kuznec.GaloisMultTabl(148, 148) ^ 32).toBe(132);
+    })
+
+})
+
+describe("Linear transformation test", ()=>{
+
+    test("Is LT works correctly", ()=>{
+        expect(kuznec.L(HexInput("64a59400000000000000000000000000")))
+        .toBe(HexInput("d456584dd0e3e84cc3166e4b7fa2890d"));
+        expect(kuznec.L(HexInput("d456584dd0e3e84cc3166e4b7fa2890d")))
+        .toBe(HexInput("79d26221b87b584cd42fbc4ffea5de9a"));
+        expect(kuznec.L(HexInput("79d26221b87b584cd42fbc4ffea5de9a")))
+        .toBe(HexInput("0e93691a0cfc60408b7b68f66b513c13"));
+        expect(kuznec.L(HexInput("0e93691a0cfc60408b7b68f66b513c13")))
+        .toBe(HexInput("e6a8094fee0aa204fd97bcb0b44b8580"));
     })
 
 })
