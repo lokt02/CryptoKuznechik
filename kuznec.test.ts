@@ -56,6 +56,8 @@ describe("Galois multiplication test", ()=>{
         expect(kuznec.GaloisMultTabl(5, 7)).toBe(27);
         expect(kuznec.GaloisMultTabl(5, 5)).toBe(17);
         expect(kuznec.GaloisMultTabl(148, 148) ^ 32).toBe(132);
+        expect(kuznec.GaloisMultTabl(148, 1)).toBe(148);
+        expect(kuznec.GaloisMultTabl(1, 148)).toBe(148);
     })
 
 })
@@ -64,13 +66,13 @@ describe("Linear transformation test", ()=>{
 
     test("Is LT works correctly", ()=>{
         expect(kuznec.L(HexInput("64a59400000000000000000000000000")))
-        .toBe(HexInput("d456584dd0e3e84cc3166e4b7fa2890d"));
+        .toStrictEqual(HexInput("d456584dd0e3e84cc3166e4b7fa2890d"));
         expect(kuznec.L(HexInput("d456584dd0e3e84cc3166e4b7fa2890d")))
-        .toBe(HexInput("79d26221b87b584cd42fbc4ffea5de9a"));
+        .toStrictEqual(HexInput("79d26221b87b584cd42fbc4ffea5de9a"));
         expect(kuznec.L(HexInput("79d26221b87b584cd42fbc4ffea5de9a")))
-        .toBe(HexInput("0e93691a0cfc60408b7b68f66b513c13"));
+        .toStrictEqual(HexInput("0e93691a0cfc60408b7b68f66b513c13"));
         expect(kuznec.L(HexInput("0e93691a0cfc60408b7b68f66b513c13")))
-        .toBe(HexInput("e6a8094fee0aa204fd97bcb0b44b8580"));
+        .toStrictEqual(HexInput("e6a8094fee0aa204fd97bcb0b44b8580"));
     })
 
 })
