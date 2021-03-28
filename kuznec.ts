@@ -31,12 +31,35 @@ export class Kuznec{
         return gm;
     }
 
-    XSL(plainText: number[], j: number){
-        for(let i = 0; i <plainText.length; i++){
-            plainText[i] = uint32.xor( plainText[i] , this.iterKey[j][i]);
+    GaloisMult(value1:number, value2:number){//Умножение в полях Галуа
+        let gm: number = 0;
+        let hi_bit: number;
+        for(let i = 0; i < 8; i++){
+            if(value2 & 1){
+                gm ^= value1;
+            }
+            hi_bit = value1 & parseInt("0x80", 16);
+            value1 <<= 1;
+            if(hi_bit < 0){
+                value1 ^= parseInt("0xc3", 16);
+            }
+            value2 >>= 1;
         }
+        return gm % 256;
+    }
+
+    XSL(plainText: number[], j: number){
+        console.log("=============================================");
+        console.log(HexOutput(plainText));
+        for(let i = 0; i <plainText.length; i++){
+            plainText[i] =  plainText[i] ^ this.iterKey[j][i];
+        }
+        console.log(HexOutput(plainText));
         plainText = this.S(plainText);
+        console.log(HexOutput(plainText));
         plainText = this.L(plainText);
+        console.log(HexOutput(plainText));
+        console.log("=============================================");
         return plainText;
     }
 
@@ -67,6 +90,7 @@ export class Kuznec{
     Encryption(plainText : number[]){
         for(let i = 0; i < this.iterKey.length; i++){
             plainText = this.XSL(plainText, i);
+            //console.log(HexOutput(plainText));
         }
         return plainText;
     }
@@ -81,9 +105,9 @@ export class Kuznec{
 
     GOSTF(key1: number[], key2:number[], iter_const: number[]){
         let internal: number[] = [];
-        let outKey2 = CopyMas(key1);
+        let outKey2 = key1;
         for(let i = 0; i < iter_const.length; i++){
-            internal.push(uint32.xor(key1, iter_const));
+            internal.push(uint32.xor(key1[i], iter_const[i]));
         }
         internal = this.L( this.S(internal));
 
@@ -102,10 +126,11 @@ export class Kuznec{
 
         let iter12: number[][] = [[], []];
         let iter34: number[][] = [[], []];
-        this.iterKey[0] = CopyMas(key1);
-        this.iterKey[1] = CopyMas(key2);
-        iter12[0] = CopyMas(key1);
-        iter12[1] = CopyMas(key2);
+        this.ConstGen();
+        this.iterKey[0] = key1;
+        this.iterKey[1] = key2;
+        iter12[0] = key1;
+        iter12[1] = key2;
 
         for(i = 0; i < 4; i++){
             for(let j = 0; j < 8; j +=2 ){
@@ -113,67 +138,69 @@ export class Kuznec{
                 iter12 = this.GOSTF(iter34[0], iter34[1], this.C[j + 1 + 8*i]);
             }
 
-            this.iterKey[2 * i + 2] = CopyMas(iter12[0]);
-            this.iterKey[2 * i + 3] = CopyMas(iter12[1]);
+            this.iterKey[2 * i + 2] = iter12[0];
+            this.iterKey[2 * i + 3] = iter12[1];
         }
 
         return this.iterKey;
     }
 
-//ЛИНЕЙНОЕ ПРЕОБРАЗОВАНИЕ
-    L (bytes: number[]){
-        
-        while(bytes.length < 16){
-            bytes.push(0);
+    GOSTR(bytes: number[]){
+        let r: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let a15: number = 0;
+        for(let i = 0; i < 15; i++){
+            r[i] = bytes[i+1];
         }
-        let result: number[] = [];
-        for(let j = 0; j < 16; j++){
-            let value = 0;//Значение, которое будет дописываться в а15
-            for(let i = 0; i < bytes.length; i++){
-                let gm = this.GaloisMultTabl(bytes[i], constants[i]);//Результат перемножениябайта и элемента таблицы линейных преобразований.
-                
-                value = uint32.xor( value , gm);//ксор для получения результата, который будет записан в a15
-                
-            }
-            // return;
-            result.push(value);//добавление в конец массива значения
-            bytes = CopyMas(result);//Копирование массива 
-            while(bytes.length < 16){
-                bytes.unshift(0);//Добавление нулей в начало
-            }
+        for(let i = 0; i < 15; i++){
+            a15 ^= this.GaloisMult(bytes[i], constants[i]);
+        }
+        r[15] = a15;
+        return r;
+    }
 
+    L(bytes: number[]){
+        let result: number[] = CopyMas(bytes);
+        // let result: number[];
+        for(let i = 0; i < 16; i++){
+            result = this.GOSTR(result);
         }
-        return result;//результат линейного преобразования
+        return result;
     }
+    
     S (bytes: number[]){
-    let result: number[]=[];
-    for(let i:number=0; i<bytes.length;i++){
-        result.push(tabl_notlin[bytes[i]]);
+        let result: number[]=[];
+        for(let i:number=0; i<bytes.length;i++){
+            result.push(tabl_notlin[bytes[i]]);
+        }
+        while(result.length < 16){
+            result.unshift(0);
+        }
+        return result;
     }
-    while(result.length < 16){
-        result.unshift(0);
-    }
-    return result;
+
+    GOSTR_rev(a: number[]){
+	    let a_0;
+	    a_0 = 0;
+	    let r_inv: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	    for (let i = 0; i < 15; i++)
+	    {
+		    r_inv[i+1] = a[i];
+	    }
+	    a_0 = a[15];
+	    for (let i = 14; i >= 0; i--)
+	    {
+		    a_0 ^= this.GaloisMult(a[i], constants[i]);
+	    }
+	    r_inv[0] = a_0;
+	    return r_inv;
     }
 
     L_rev (bytes: number[]){
 	
-        let res: number[] =[];
-        // console.log(bytes);
+        let res: number[] = CopyMas(bytes);
+
         for(let j = 0; j < 16; j++){
-            //Это мы переставляем элемент в массиве
-            let a15:number = bytes[15];
-            bytes.unshift(a15);
-            bytes=bytes.slice(0, 14);
-    
-            //Тут мы кончаем делать перестановочку
-            let value = 0;
-            for(let i = 0; i < bytes.length; i++){
-                let gm = this.GaloisMultTabl(bytes[i], constants[i]);
-                value = uint32.xor( value , gm);
-                }
-            res.unshift(value);
-            bytes = CopyMas(res);
+            res = this.GOSTR_rev(res);
         }
         return res;	
     }
@@ -182,9 +209,9 @@ export class Kuznec{
         while(bytes.length < 16){
             bytes.push(0);
         }
-        let result: number[]=[];
+        let result: number[]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         for(let i:number=0; i<16;i++){
-            result[i]=tabl_notlin_reverse[bytes[i]];
+            result[i] = tabl_notlin.indexOf(bytes[i]);
         }
         return result;
     }
