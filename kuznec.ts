@@ -29,22 +29,22 @@ export class Kuznec{
         return gm;
     }
 
-    GaloisMult(value1:number, value2:number){//Умножение в полях Галуа
-        let gm: number = 0;
-        let hi_bit: number;
-        for(let i = 0; i < 8; i++){
-            if(value2 & 1){
-                gm ^= value1;
-            }
-            hi_bit = value1 & parseInt("0x80", 16);
-            value1 <<= 1;
-            if(hi_bit < 0){
-                value1 ^= parseInt("0xc3", 16);
-            }
-            value2 >>= 1;
+    GaloisMult(value1:number, value2:number){
+    let gm: number = 0;
+    let hi_bit: number;
+    for(let i = 0; i < 8; i++){
+        if(value2 & 1){
+            gm ^= value1;
         }
-        return gm % 256;
+        hi_bit = value1 & 0x80;
+        value1 <<= 1;
+        if(hi_bit){
+            value1 ^= 0xc3;
+        }
+        value2 >>= 1;
     }
+    return gm%256;
+}
 
     XSL(plainText: number[], j: number){
         console.log("=============================================");
