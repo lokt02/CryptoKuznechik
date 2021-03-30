@@ -49,9 +49,7 @@ export class Kuznec{
     XSL(plainText: number[], j: number){
         console.log("=============================================");
         console.log(HexOutput(plainText));
-        for(let i = 0; i <plainText.length; i++){
-            plainText[i] =  plainText[i] ^ this.iterKey[j][i];
-        }
+        plainText = this.XOR(plainText, this.iterKey[j]);
         console.log(HexOutput(plainText));
         plainText = this.S(plainText);
         console.log(HexOutput(plainText));
@@ -64,9 +62,7 @@ export class Kuznec{
     LrSrX(cipherText: number[], j: number){
         cipherText = this.S_rev(cipherText);
         cipherText = this.L_rev(cipherText);
-        for(let i = 0; i <cipherText.length; i++){
-            cipherText[i] = uint32.xor( cipherText[i] , this.iterKey[j][i]);
-        }
+        cipherText = this.XOR(cipherText, this.iterKey[j]);
         return cipherText;
     }
 
@@ -81,8 +77,12 @@ export class Kuznec{
         return cipherText;
     }
 
-    XOR(a: number, b: number){
-        return uint32.xor(a , b);
+    XOR(a: number[], b: number[]){
+        let result: number[] = [];
+        for(let i = 0; i < 16; i++){
+            result.push(a[i] ^ b[i])
+        }
+        return result
     }
 
     Encryption(plainText : number[]){
@@ -189,7 +189,7 @@ export class Kuznec{
 	    a_0 = a[15];
 	    for (let i = 14; i >= 0; i--)
 	    {
-		    a_0 ^= this.GaloisMult(a[i], constants[i]);
+		    a_0 ^= this.GaloisMult(a[i], constants1[i]);
 	    }
 	    r_inv[0] = a_0;
 	    return r_inv;
