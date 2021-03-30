@@ -3,9 +3,7 @@ import {Polynom, CopyMas} from './polynom';
 import {tab1} from './Tabl1';
 import {tabl_notlin} from './Tabl_notlin';
 import {tabl_notlin_reverse} from './tabl_notlin_reverse';
-let constants:number[] = [1, 148, 32, 133, 16, 194,
-     192, 1, 251, 1, 192, 194, 16, 133,
-      32, 148]
+let constants1:number[] = [148, 32, 133, 16, 194, 192, 1, 251, 1, 192, 194, 16, 133, 32, 148, 1];
 
 export function HexOutput(array: number[]){
     let temp = ""
@@ -146,17 +144,19 @@ export class Kuznec{
     }
 
     GOSTR(bytes: number[]){
-        let r: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        let a15: number = 0;
-        for(let i = 0; i < 15; i++){
-            r[i] = bytes[i+1];
-        }
-        for(let i = 0; i < 15; i++){
-            a15 ^= this.GaloisMult(bytes[i], constants[i]);
-        }
-        r[15] = a15;
-        return r;
+    let r: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let a15: number = 0;
+    for(let i = 0; i <16; i++){
+        a15 ^= this.GaloisMult(bytes[i], constants1[i]);
+        
     }
+    for(let i = 1; i < 16; i++){
+        r[i] = bytes[i-1];
+    }
+    
+    r[0] = a15;
+    return r;
+}
 
     L(bytes: number[]){
         let result: number[] = CopyMas(bytes);
