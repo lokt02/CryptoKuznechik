@@ -67,38 +67,26 @@ describe("Linear transformation test", ()=>{
 
 describe("Key generation test", ()=>{
     kuznec.KeyGen(HexInput("8899aabbccddeeff0011223344556677"), HexInput("fedcba98765432100123456789abcdef"));
-
-    test("Check constant", ()=>{
-        expect(kuznec.C[0]).toStrictEqual(HexInput("6ea276726c487ab85d27bd10dd849401"));
-        expect(kuznec.C[1]).toStrictEqual(HexInput("dc87ece4d890f4b3ba4eb92079cbeb02"));
-        expect(kuznec.C[2]).toStrictEqual(HexInput("b2259a96b4d88e0be7690430a44f7f03"));
-        expect(kuznec.C[3]).toStrictEqual(HexInput("7bcd1b0b73e32ba5b79cb140f2551504"));
-        expect(kuznec.C[4]).toStrictEqual(HexInput("156f6d791fab511deabb0c502fd18105"));
-        expect(kuznec.C[5]).toStrictEqual(HexInput("a74af7efab73df160dd208608b9efe06"));
-        expect(kuznec.C[6]).toStrictEqual(HexInput("c9e8819dc73ba5ae50f5b570561a6a07"));
-        expect(kuznec.C[7]).toStrictEqual(HexInput("f6593616e6055689adfba18027aa2a08"));
-    })
     
     test("Does XOR work correctly", ()=>{
-        expect(kuznec.XOR(kuznec.iterKey[0], kuznec.C[0])).toStrictEqual(HexInput("e63bdcc9a09594475d369f2399d1f276"));
+        expect(kuznec.XOR(kuznec.iterKey[0], HexInput('6ea276726c487ab85d27bd10dd849401'))).toStrictEqual(HexInput("e63bdcc9a09594475d369f2399d1f276"));
     })
 
     test("Does keygen work correctly", ()=>{
         expect(kuznec.iterKey[0]).toStrictEqual(HexInput("8899aabbccddeeff0011223344556677"));
         expect(kuznec.iterKey[1]).toStrictEqual(HexInput("fedcba98765432100123456789abcdef"));
         
-        expect(kuznec.iterKey[2]).toStrictEqual(HexInput("db31485315694343228d6aef8cc78c44"));
-        expect(kuznec.iterKey[3]).toStrictEqual(HexInput("3d4553d8e9cfec6815ebadc40a9ffd04"));
+        expect(kuznec.iterKey[2]).toStrictEqual(HexInput("448cc78cef6a8d2243436915534831db"));
+        expect(kuznec.iterKey[3]).toStrictEqual(HexInput("04FD9F0AC4ADEB1568ECCFE9D853453D"));
 
-        expect(kuznec.iterKey[4]).toStrictEqual(HexInput("57646468c44a5e28d3e59246f429f1ac"));
-        expect(kuznec.iterKey[5]).toStrictEqual(HexInput("bd079435165c6432b532e82834da581b"));
+        expect(kuznec.iterKey[4]).toStrictEqual(HexInput("ACF129F44692E5D3285E4AC468646457"));
+        expect(kuznec.iterKey[5]).toStrictEqual(HexInput("1B58DA3428E832B532645C16359407BD"));
 
-        expect(kuznec.iterKey[5]).toStrictEqual(HexInput("51e640757e8745de705727265a0098b1"));
-        expect(kuznec.iterKey[6]).toStrictEqual(HexInput("b7bd70acea4460714f4ebe13835cf004"));
+        expect(kuznec.iterKey[6]).toStrictEqual(HexInput("B198005A26275770DE45877E7540E651"));
+        expect(kuznec.iterKey[7]).toStrictEqual(HexInput("84F98622A2912AD73EDD9F7B0125795A"));
         
-        expect(kuznec.iterKey[7]).toStrictEqual(HexInput("5a7925017b9fdd3ed72a91a22286f984"));
-        expect(kuznec.iterKey[8]).toStrictEqual(HexInput("bb44e25378c73123a5f32f73cdb6e517"));
-        expect(kuznec.iterKey[9]).toStrictEqual(HexInput("72e9dd7416bcf45b755dbaa88e4a4043"));
+        expect(kuznec.iterKey[8]).toStrictEqual(HexInput("17E5B6CD732FF3A52331C77853E244BB"));
+        expect(kuznec.iterKey[9]).toStrictEqual(HexInput("43404A8EA8BA5D755BF4BC1674DDE972"));
     })
 
 })

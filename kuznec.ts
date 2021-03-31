@@ -179,7 +179,7 @@ export class Kuznec{
     }
 
     GOSTR_rev(a: number[]){
-	    let a_0;
+	    let a_0: number;
 	    a_0 = 0;
 	    let r_inv: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	    for (let i = 0; i < 15; i++)
@@ -187,9 +187,9 @@ export class Kuznec{
 		    r_inv[i+1] = a[i];
 	    }
 	    a_0 = a[15];
-	    for (let i = 14; i >= 0; i--)
+	    for (let i = 15; i >= 0; i--)
 	    {
-		    a_0 ^= this.GaloisMult(a[i], constants1[i]);
+		    a_0 ^= this.GaloisMult(a[i], constants1[15 - i]);
 	    }
 	    r_inv[0] = a_0;
 	    return r_inv;
