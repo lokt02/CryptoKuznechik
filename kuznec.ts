@@ -46,11 +46,11 @@ export class Kuznec{
     return gm%256;
 }
 
-    XSL(plaletext: number[], j: number){
-        plaletext = this.XOR(plaletext, this.iterKey[j]);
-        plaletext = this.S(plaletext);
-        plaletext = this.L(plaletext);
-        return plaletext;
+    XSL(plaintext: number[], j: number){
+        plaintext = this.XOR(plaintext, this.iterKey[j]);
+        plaintext = this.S(plaintext);
+        plaintext = this.L(plaintext);
+        return plaintext;
     }
 
     LrSrX(cipherText: number[], j: number){
@@ -61,9 +61,10 @@ export class Kuznec{
     }
 
     Decryption(cipherText : number[]){
-        for(let i = 0; i < cipherText.length; i++){
-            cipherText[i] = cipherText[i] ^ this.iterKey[9][i];
-        }
+        // for(let i = 0; i < cipherText.length; i++){
+        //     cipherText[i] = cipherText[i] ^ this.iterKey[9][i];
+        // }
+        cipherText = this.XOR(cipherText, this.iterKey[9]);
 
         for(let i = this.iterKey.length - 2; i >= 0; i--){
             cipherText = this.LrSrX(cipherText, i);
@@ -79,18 +80,19 @@ export class Kuznec{
         return result
     }
 
-    Encryption(plaletext : number[]){
-        for(let i = 0; i < this.iterKey.length; i++){
-            plaletext = this.XSL(plaletext, i);
+    Encryption(plaintext : number[]){
+        for(let i = 0; i < this.iterKey.length - 1; i++){
+            plaintext = this.XSL(plaintext, i);
             //console.log(HexOutput(plaletext));
         }
-        return plaletext;
+        plaintext = this.XOR(plaintext, this.iterKey[this.iterKey.length - 1]);
+        return plaintext;
     }
 
     ConstGen(){
         this.C = [];
         for(let i = 1; i <= 32; i++){
-            this.C.push(this.L([i]));
+            this.C.push(this.L([i]).reverse());
         }
         return this.C;
     }

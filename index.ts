@@ -10,9 +10,14 @@ kuz.KeyGen(HexInput("7766554433221100FFEEDDCCBBAA9988"), HexInput("EFCDAB8967452
 // }
 
 let temp = kuz.Encryption(
-    HexInput("8899aabbccddeeff0077665544332211")
+    HexInput("1122334455667700ffeeddccbbaa9988")
 );
-// console.log("8899aabbccddeeff0077665544332211");
+// console.log("88 99 aa bb cc dd ee ff 00 77 66 55 44 33 22 11");
+
+console.log(
+    HexOutput(HexInput("1122334455667700ffeeddccbbaa9988"))
+);
+
 console.log(
     HexOutput(temp)
 );
