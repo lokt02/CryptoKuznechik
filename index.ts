@@ -13,16 +13,16 @@ let temp = kuz.Encryption(
     HexInput("8899aabbccddeeff0077665544332211")
 );
 // console.log("8899aabbccddeeff0077665544332211");
-// console.log(
-//     HexOutput(temp)
-// );
+console.log(
+    HexOutput(temp)
+);
 
 let temp1 = kuz.Decryption(
     temp
 );
-// console.log(
-//     HexOutput(temp1)
-// );
+console.log(
+    HexOutput(temp1)
+);
 
 let g: number[][] = [];
 for(let i = 1; i < 256; i++)

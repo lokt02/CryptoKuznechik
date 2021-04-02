@@ -116,14 +116,14 @@ describe("Key generation test", ()=>{
 
 describe("Does reverse functions work correctly", ()=>{
 
-    // test("Reverse R check", ()=>{
-    //     expect(kuznec.L_rev(HexInput("94000000000000000000000000000001")))
-    //     .toStrictEqual(HexInput("00000000000000000000000000000100"));
-    // })
+    test("Reverse R check", ()=>{
+        expect(kuznec.GOSTR_rev(HexInput("94000000000000000000000000000001")))
+        .toStrictEqual(HexInput("00000000000000000000000000000100"));
+    })
 
-    // test("Reverse linear transformation check", ()=>{
-    //     expect(kuznec.L_rev(HexInput("e6a8094fee0aa204fd97bcb0b44b8580")))
-    //     .toStrictEqual(HexInput("0e93691a0cfc60408b7b68f66b513c13"));
-    // })
+    test("Reverse linear transformation check", ()=>{
+        expect(kuznec.L_rev(HexInput("e6a8094fee0aa204fd97bcb0b44b8580")))
+        .toStrictEqual(HexInput("0e93691a0cfc60408b7b68f66b513c13"));
+    })
 
 })
