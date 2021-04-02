@@ -1,9 +1,9 @@
-import uint32 = require('uint32');
 import {Polynom, CopyMas} from './polynom';
 import {tab1} from './Tabl1';
 import {tabl_notlin} from './Tabl_notlin';
 import {tabl_notlin_reverse} from './tabl_notlin_reverse';
-let constants1:number[] = [148, 32, 133, 16, 194, 192, 1, 251, 1, 192, 194, 16, 133, 32, 148, 1];
+let constants1:number[] = [148, 32, 133, 16, 194, 192, 1, 251,
+     1, 192, 194, 16, 133, 32, 148, 1];
 
 export function HexOutput(array: number[]){
     let temp = ""
@@ -46,17 +46,11 @@ export class Kuznec{
     return gm%256;
 }
 
-    XSL(plainText: number[], j: number){
-        console.log("=============================================");
-        console.log(HexOutput(plainText));
-        plainText = this.XOR(plainText, this.iterKey[j]);
-        console.log(HexOutput(plainText));
-        plainText = this.S(plainText);
-        console.log(HexOutput(plainText));
-        plainText = this.L(plainText);
-        console.log(HexOutput(plainText));
-        console.log("=============================================");
-        return plainText;
+    XSL(plaletext: number[], j: number){
+        plaletext = this.XOR(plaletext, this.iterKey[j]);
+        plaletext = this.S(plaletext);
+        plaletext = this.L(plaletext);
+        return plaletext;
     }
 
     LrSrX(cipherText: number[], j: number){
@@ -68,7 +62,7 @@ export class Kuznec{
 
     Decryption(cipherText : number[]){
         for(let i = 0; i < cipherText.length; i++){
-            cipherText[i] = uint32.xor( cipherText[i] , this.iterKey[9][i]);
+            cipherText[i] = cipherText[i] ^ this.iterKey[9][i];
         }
 
         for(let i = this.iterKey.length - 2; i >= 0; i--){
@@ -85,12 +79,12 @@ export class Kuznec{
         return result
     }
 
-    Encryption(plainText : number[]){
+    Encryption(plaletext : number[]){
         for(let i = 0; i < this.iterKey.length; i++){
-            plainText = this.XSL(plainText, i);
-            //console.log(HexOutput(plainText));
+            plaletext = this.XSL(plaletext, i);
+            //console.log(HexOutput(plaletext));
         }
-        return plainText;
+        return plaletext;
     }
 
     ConstGen(){
@@ -102,20 +96,27 @@ export class Kuznec{
     }
 
     GOSTF(key1: number[], key2:number[], iter_const: number[]){
+        // console.log("======================================");
         let internal: number[] = [];
         let outKey2 = key1;
-        for(let i = 0; i < iter_const.length; i++){
-            internal.push(uint32.xor(key1[i], iter_const[i]));
-        }
-        internal = this.L( this.S(internal));
+        // console.log(HexOutput(key1), " ", HexOutput(key2));
+        internal = this.XOR(key1, iter_const);
+        // console.log(HexOutput(internal), " ", HexOutput(key2));
+        internal = this.S(internal);
+        // console.log(HexOutput(internal), " ", HexOutput(key2));
+        internal = this.L(internal);
+        // console.log(HexOutput(internal), " ", HexOutput(key2));
 
         let outKey1: number[] = [];
         for(let i = 0; i < key2.length; i++)
-            outKey1.push(uint32.xor(internal[i], key2[i]));
+            outKey1.push(internal[i] ^ key2[i]);
+        // console.log(HexOutput(outKey1), " ", HexOutput(outKey2));
         
         let key: number[][] = [];
         key.push(outKey1);
         key.push(outKey2);
+        // console.log(HexOutput(key[0]), " ", HexOutput(key[0]));
+        // console.log("======================================");
         return key;
     }
 
@@ -146,12 +147,19 @@ export class Kuznec{
     GOSTR(bytes: number[]){
     let r: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let a15: number = 0;
-    for(let i = 0; i <16; i++){
-        a15 ^= this.GaloisMult(bytes[i], constants1[i]);
-        
-    }
-    for(let i = 1; i < 16; i++){
+
+    // for(let i = 1; i < 16; i++){
+    //     r[i] = bytes[i-1];
+    // }
+
+    for(let i = 15; i >= 1; i--){
         r[i] = bytes[i-1];
+    }
+
+    // console.log("ПЕРВЫЙ ЦИКЛ ЛОЛ ", HexOutput(r), " ", HexOutput(bytes));
+    for(let i = 0; i <16; i++){
+        a15 ^= this.GaloisMult(constants1[i], bytes[i]);
+        
     }
     
     r[0] = a15;
@@ -187,7 +195,7 @@ export class Kuznec{
 		    r_inv[i+1] = a[i];
 	    }
 	    a_0 = a[15];
-	    for (let i = 15; i >= 0; i--)
+	    for (let i = 14; i >= 0; i--)
 	    {
 		    a_0 ^= this.GaloisMult(a[i], constants1[15 - i]);
 	    }
@@ -201,6 +209,7 @@ export class Kuznec{
 
         for(let j = 0; j < 16; j++){
             res = this.GOSTR_rev(res);
+            // console.log(HexOutput(res), " ", j);
         }
         return res;	
     }
@@ -229,7 +238,7 @@ export function HexInput(byte:string){
     }
     byte = temp.join('');
     //сам
-    for(let i:number=0;i<32;i+=2){
+    for(let i:number=0;i<byte.length;i+=2){
     if(byte[i] !== undefined && byte[i + 1] !== undefined){
         let B_s:number = parseInt(byte[i] + byte[i+1], 16);
         byte_num.push(B_s);
@@ -237,5 +246,8 @@ export function HexInput(byte:string){
     else{
         byte_num.unshift(0);
     }
+    }
+    while(byte_num.length < 16){
+        byte_num.unshift(0);
     }
     return(byte_num);}

@@ -3,26 +3,26 @@ import {Kuznec, HexInput, HexOutput} from './kuznec';
 import {Polynom} from './polynom';
 
 var kuz:Kuznec = new Kuznec();
-kuz.KeyGen(HexInput("8899aabbccddeeff0011223344556677"), HexInput("fedcba98765432100123456789abcdef"));
+kuz.KeyGen(HexInput("7766554433221100FFEEDDCCBBAA9988"), HexInput("EFCDAB89674523011032547698BADCFE"));
 
-for(let i = 0; i < 10; i++){
-    console.log(HexOutput(kuz.iterKey[i]))
-}
+// for(let i = 0; i < 10; i++){
+//     console.log(HexOutput(kuz.iterKey[i]))
+// }
 
 let temp = kuz.Encryption(
     HexInput("8899aabbccddeeff0077665544332211")
 );
-console.log("8899aabbccddeeff0077665544332211");
-console.log(
-    HexOutput(temp)
-);
+// console.log("8899aabbccddeeff0077665544332211");
+// console.log(
+//     HexOutput(temp)
+// );
 
 let temp1 = kuz.Decryption(
     temp
 );
-console.log(
-    HexOutput(temp1)
-);
+// console.log(
+//     HexOutput(temp1)
+// );
 
 let g: number[][] = [];
 for(let i = 1; i < 256; i++)
