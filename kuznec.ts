@@ -127,7 +127,14 @@ export class Kuznec{
         return key;
     }
 
-    KeyGen(key1: number[], key2: number[]){
+    KeyGen(masterkey: number[]){
+        let key1: number[] = []; let key2: number[] = [];
+        for(let i = 0; i < 16; i++){
+            key1[i] = masterkey[i];
+        }
+        for(let i = 16; i < 32; i++){
+            key2[i - 16] = masterkey[i];
+        }
         let i: number;
 
         let iter12: number[][] = [[], []];
