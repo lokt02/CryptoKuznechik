@@ -90,13 +90,14 @@ export class Kuznec{
     }
 
     ConstGen(){
-    let C:number[][]=[];
+    this.C=[];
     for(let i = 1; i <= 32; i++){
         let z: number =i;
         let m: number[]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         m[15]=z;
-        let s= HexOutput(m);
-        C.push(L(HexInput(s)));
+        // let s= HexOutput(m);
+        // console.log(s);
+        this.C.push(this.L(m));
     }
     return this.C;
 }
