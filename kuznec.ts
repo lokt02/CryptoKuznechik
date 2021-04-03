@@ -257,13 +257,10 @@ export function HexInput(byte:string){
     byte = temp.join('');
     //сам
     for(let i:number=0;i<byte.length;i+=2){
-    if(byte[i] !== undefined && byte[i + 1] !== undefined){
-        let B_s:number = parseInt(byte[i] + byte[i+1], 16);
-        byte_num.push(B_s);
-    }
-    else{
-        byte_num.unshift(0);
-    }
+        if(byte[i] !== undefined && byte[i + 1] !== undefined){
+            let B_s:number = parseInt(byte[i] + byte[i+1], 16);
+            byte_num.push(B_s);
+        }
     }
     while(byte_num.length < 16){
         byte_num.unshift(0);
