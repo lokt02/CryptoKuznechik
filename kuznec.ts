@@ -90,12 +90,16 @@ export class Kuznec{
     }
 
     ConstGen(){
-        this.C = [];
-        for(let i = 1; i <= 32; i++){
-            this.C.push(this.L([i]).reverse());
-        }
-        return this.C;
+    let C:number[][]=[];
+    for(let i = 1; i <= 32; i++){
+        let z: number =i;
+        let m: number[]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        m[15]=z;
+        let s= HexOutput(m);
+        C.push(L(HexInput(s)));
     }
+    return this.C;
+}
 
     GOSTF(key1: number[], key2:number[], iter_const: number[]){
         // console.log("======================================");
