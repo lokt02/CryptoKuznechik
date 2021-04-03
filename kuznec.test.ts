@@ -78,7 +78,7 @@ describe("Linear transformation test", ()=>{
 })
 
 describe("Key generation test", ()=>{
-    kuznec.KeyGen(HexInput("8899aabbccddeeff0011223344556677"), HexInput("fedcba98765432100123456789abcdef"));
+    kuznec.KeyGen(HexInput("8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef"));
     
     test("Does XOR work correctly", ()=>{
         expect(kuznec.XOR(kuznec.iterKey[0], HexInput('6ea276726c487ab85d27bd10dd849401'))).toStrictEqual(HexInput("e63bdcc9a09594475d369f2399d1f276"));

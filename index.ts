@@ -3,7 +3,7 @@ import {Kuznec, HexInput, HexOutput} from './kuznec';
 import {Polynom} from './polynom';
 
 var kuz:Kuznec = new Kuznec();
-kuz.KeyGen(HexInput("7766554433221100FFEEDDCCBBAA9988"), HexInput("EFCDAB89674523011032547698BADCFE"));
+kuz.KeyGen(HexInput("7766554433221100FFEEDDCCBBAA9988EFCDAB89674523011032547698BADCFE"));
 
 // for(let i = 0; i < 10; i++){
 //     console.log(HexOutput(kuz.iterKey[i]))
