@@ -54,8 +54,8 @@ export class Kuznec{
     }
 
     LrSrX(cipherText: number[], j: number){
-        cipherText = this.S_rev(cipherText);
         cipherText = this.L_rev(cipherText);
+        cipherText = this.S_rev(cipherText);
         cipherText = this.XOR(cipherText, this.iterKey[j]);
         return cipherText;
     }
@@ -64,7 +64,7 @@ export class Kuznec{
         // for(let i = 0; i < cipherText.length; i++){
         //     cipherText[i] = cipherText[i] ^ this.iterKey[9][i];
         // }
-        cipherText = this.XOR(cipherText, this.iterKey[9]);
+        cipherText = this.XOR(cipherText, this.iterKey[this.iterKey.length - 1]);
 
         for(let i = this.iterKey.length - 2; i >= 0; i--){
             cipherText = this.LrSrX(cipherText, i);

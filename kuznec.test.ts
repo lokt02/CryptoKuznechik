@@ -141,7 +141,7 @@ describe("Does reverse functions work correctly", ()=>{
 describe("Does encryption function work correctly", ()=>{
 
     test("Encryption check", ()=>{
-        expect(kuznec.Decryption(HexInput("1122334455667700ffeeddccbbaa9988")))
+        expect(kuznec.Encryption(HexInput("1122334455667700ffeeddccbbaa9988")))
         .toStrictEqual(HexInput("7f679d90bebc24305a468d42b9d4edcd"));
     })
 
