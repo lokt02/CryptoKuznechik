@@ -1,4 +1,4 @@
-import {Kuznec, HexInput, HexOutput} from "./kuznec";
+import {Kuznec, HexInput} from "./kuznec";
 
 const kuznec = new Kuznec();
 
@@ -22,11 +22,6 @@ describe("Xor testing", () => {
 describe("NotLinear transformation test", ()=>{
 
     test("Does NLT work corresctly", ()=>{
-        expect(kuznec.S([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])).toStrictEqual([
-            238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 218, 35, 197, 4, 77, 233
-        ]);
-        expect(kuznec.S([0])).toStrictEqual(HexInput("FC"));
-        expect(kuznec.S([118])).toStrictEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138]);
         expect(kuznec.S(HexInput("ffeeddccbbaa99881122334455667700")))
         .toStrictEqual(HexInput("b66cd8887d38e8d77765aeea0c9a7efc"));
         expect(kuznec.S(HexInput("b66cd8887d38e8d77765aeea0c9a7efc")))
@@ -42,11 +37,11 @@ describe("NotLinear transformation test", ()=>{
 describe("Galois multiplication test", ()=>{
 
     test("Does GM work correctly", ()=>{
-        expect(kuznec.GaloisMultTabl(5, 7)).toBe(27);
-        expect(kuznec.GaloisMultTabl(5, 5)).toBe(17);
-        expect(kuznec.GaloisMultTabl(148, 148) ^ 32).toBe(132);
-        expect(kuznec.GaloisMultTabl(148, 1)).toBe(148);
-        expect(kuznec.GaloisMultTabl(1, 148)).toBe(148);
+        expect(Buffer.from([kuznec.GaloisMult(5, 7)])).toStrictEqual(Buffer.from([27]));
+        expect(Buffer.from([kuznec.GaloisMult(5, 5)])).toStrictEqual(Buffer.from([17]));
+        expect(Buffer.from([kuznec.GaloisMult(148, 148) ^ 32])).toStrictEqual(Buffer.from([132]));
+        expect(Buffer.from([kuznec.GaloisMult(148, 1)])).toStrictEqual(Buffer.from([148]));
+        expect(Buffer.from([kuznec.GaloisMult(1, 148)])).toStrictEqual(Buffer.from([148]));
     })
 
 })
