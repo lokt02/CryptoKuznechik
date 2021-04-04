@@ -7,7 +7,7 @@ const fs = require('fs');
 let inputString: string = fs.readFileSync("input.txt", "utf8");
 let block: string[] = [];
 for(let i = 0; i < inputString.length; i+=16){
-    block.push(inputString.slice(i, i + 15));
+    block.push(inputString.slice(i, i + 16));
 }
 
 var encrypted: Buffer[] = []
