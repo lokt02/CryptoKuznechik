@@ -1,22 +1,4 @@
-let tab1: number[]=
-   [1  ,2  ,4  ,8  ,16 ,32 ,64 ,128,195,69 ,138,215,109,218,119,238,
-    31 ,62 ,124,248,51 ,102,204,91 ,182,175,157,249,49 ,98 ,196,75,
-    150,239,29 ,58 ,116,232,19 ,38 ,76 ,152,243,37 ,74 ,148,235,21,
-    42 ,84 ,168,147,229,9  ,18 ,36 ,72 ,144,227,5  ,10 ,20 ,40 ,80,
-    160,131,197,73 ,146,231,13 ,26 ,52 ,104,208,99 ,198,79 ,158,255,
-    61 ,122,244,43 ,86 ,172,155,245,41 ,82 ,164,139,213,105,210,103,
-    206,95 ,190,191,189,185,177,161,129,193,65 ,130,199,77 ,154,247,
-    45 ,90 ,180,171,149,233,17 ,34 ,68 ,136,211,101,202,87 ,174,159,
-    253,57 ,114,228,11 ,22 ,44 ,88 ,176,163,133,201,81 ,162,135,205,
-    89 ,178,167,141,217,113,226,7  ,14 ,28 ,56 ,112,224,3  ,6  ,12,
-    24 ,48 ,96 ,192,67 ,134,207,93 ,186,183,173,153,241,33 ,66 ,132,
-    203,85 ,170,151,237,25 ,50 ,100,200,83 ,166,143,221,121,242,39,
-    78 ,156,251,53 ,106,212,107,214,111,222,127,254,63 ,126,252,59,
-    118,236,27 ,54 ,108,216,115,230,15 ,30 ,60 ,120,240, 35,70 ,140,
-    219,117,234,23 ,46 ,92 ,184,179,165,137,209,97 ,194, 71,142,223,
-    125,250,55 ,110,220,123,246,47 ,94 ,188,187,181,169,145,225,1];
-
-let tabl_notlin: number[]=[
+let tabl_notlin: Buffer=Buffer.from([
     252, 238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 218, 35, 197, 4, 
     77, 233, 119, 240, 219, 147, 46, 153, 186, 23, 54, 241, 187, 20, 205, 
     95, 193, 249, 24, 101, 90, 226, 92, 239, 33, 129, 28, 60, 66, 139, 1, 
@@ -33,33 +15,17 @@ let tabl_notlin: number[]=[
     231, 137, 225, 27, 131, 73, 76, 63, 248, 254, 141, 83, 170, 144, 202, 216, 
     133, 97, 32, 113, 103, 164, 45, 43, 9, 91, 203, 155, 37, 208, 190, 229, 
     108, 82, 89, 166, 116, 210, 230, 244, 180, 192, 209, 102, 175, 194, 57, 75, 99, 182
-  ]
-let constants1:number[] = [148, 32, 133, 16, 194, 192, 1, 251,
-     1, 192, 194, 16, 133, 32, 148, 1];
-
-export function HexOutput(array: number[]){
-    let temp = ""
-    for(let i = 0; i < array.length; i++){
-        temp += array[i].toString(16) + " ";
-    }
-    return temp;
-}
+  ])
+let constants1:Buffer = Buffer.from([148, 32, 133, 16, 194, 192, 1, 251,
+     1, 192, 194, 16, 133, 32, 148, 1]);
 
 export class Kuznec{
-    C: number[][];
-    iterKey: number[][];
+    C: Buffer[];
+    iterKey: Buffer[];
 
     constructor(){
         this.iterKey = [];
     };
-
-    GaloisMultTabl(value1:number, value2:number){//Умножение Галуа с помощю таблицы
-        if(value1 === 0 || value2 === 0) return 0;
-        let p1 = tab1.indexOf(value1);
-        let p2 = tab1.indexOf(value2);
-        let gm = tab1[(p1 + p2) % tab1.length]
-        return gm;
-    }
 
     GaloisMult(value1:number, value2:number){
     let gm: number = 0;
@@ -75,27 +41,24 @@ export class Kuznec{
         }
         value2 >>= 1;
     }
-    return gm%256;
+    return gm;
 }
 
-    XSL(plaintext: number[], j: number){
+    XSL(plaintext: Buffer, j: number){
         plaintext = this.XOR(plaintext, this.iterKey[j]);
         plaintext = this.S(plaintext);
         plaintext = this.L(plaintext);
         return plaintext;
     }
 
-    LrSrX(cipherText: number[], j: number){
+    LrSrX(cipherText: Buffer, j: number){
         cipherText = this.L_rev(cipherText);
         cipherText = this.S_rev(cipherText);
         cipherText = this.XOR(cipherText, this.iterKey[j]);
         return cipherText;
     }
 
-    Decryption(cipherText : number[]){
-        // for(let i = 0; i < cipherText.length; i++){
-        //     cipherText[i] = cipherText[i] ^ this.iterKey[9][i];
-        // }
+    Decryption(cipherText : Buffer){
         cipherText = this.XOR(cipherText, this.iterKey[this.iterKey.length - 1]);
 
         for(let i = this.iterKey.length - 2; i >= 0; i--){
@@ -104,18 +67,17 @@ export class Kuznec{
         return cipherText;
     }
 
-    XOR(a: number[], b: number[]){
-        let result: number[] = [];
+    XOR(a: Buffer, b: Buffer){
+        let result: Buffer = Buffer.alloc(16);
         for(let i = 0; i < 16; i++){
-            result.push(a[i] ^ b[i])
+            result[i] = a[i] ^ b[i];
         }
         return result
     }
 
-    Encryption(plaintext : number[]){
+    Encryption(plaintext : Buffer){
         for(let i = 0; i < this.iterKey.length - 1; i++){
             plaintext = this.XSL(plaintext, i);
-            //console.log(HexOutput(plaletext));
         }
         plaintext = this.XOR(plaintext, this.iterKey[this.iterKey.length - 1]);
         return plaintext;
@@ -125,42 +87,31 @@ export class Kuznec{
     this.C=[];
     for(let i = 1; i <= 32; i++){
         let z: number =i;
-        let m: number[]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        let m: Buffer=Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
         m[15]=z;
-        // let s= HexOutput(m);
-        // console.log(s);
         this.C.push(this.L(m));
     }
     return this.C;
 }
 
-    GOSTF(key1: number[], key2:number[], iter_const: number[]){
-        // console.log("======================================");
-        let internal: number[] = [];
+    GOSTF(key1: Buffer, key2:Buffer, iter_const: Buffer){
+        let internal: Buffer = Buffer.alloc(0);
         let outKey2 = key1;
-        // console.log(HexOutput(key1), " ", HexOutput(key2));
         internal = this.XOR(key1, iter_const);
-        // console.log(HexOutput(internal), " ", HexOutput(key2));
         internal = this.S(internal);
-        // console.log(HexOutput(internal), " ", HexOutput(key2));
         internal = this.L(internal);
-        // console.log(HexOutput(internal), " ", HexOutput(key2));
 
-        let outKey1: number[] = [];
-        for(let i = 0; i < key2.length; i++)
-            outKey1.push(internal[i] ^ key2[i]);
-        // console.log(HexOutput(outKey1), " ", HexOutput(outKey2));
+        let outKey1: Buffer = Buffer.alloc(0);
+        outKey1 = this.XOR(internal, key2);
         
-        let key: number[][] = [];
+        let key: Buffer[] = [];
         key.push(outKey1);
         key.push(outKey2);
-        // console.log(HexOutput(key[0]), " ", HexOutput(key[0]));
-        // console.log("======================================");
         return key;
     }
 
-    KeyGen(masterkey: number[]){
-        let key1: number[] = []; let key2: number[] = [];
+    KeyGen(masterkey: Buffer){
+        let key1: Buffer = Buffer.alloc(16); let key2: Buffer = Buffer.alloc(16);
         for(let i = 0; i < 16; i++){
             key1[i] = masterkey[i];
         }
@@ -169,8 +120,8 @@ export class Kuznec{
         }
         let i: number;
 
-        let iter12: number[][] = [[], []];
-        let iter34: number[][] = [[], []];
+        let iter12: Buffer[] = [Buffer.alloc(0), Buffer.alloc(0)];
+        let iter34: Buffer[] = [Buffer.alloc(0), Buffer.alloc(0)];
         this.ConstGen();
         this.iterKey[0] = key1;
         this.iterKey[1] = key2;
@@ -190,57 +141,44 @@ export class Kuznec{
         return this.iterKey;
     }
 
-    GOSTR(bytes: number[]){
-    let r: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    GOSTR(bytes: Buffer){
+    let r: Buffer = Buffer.from([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     let a15: number = 0;
-
-    // for(let i = 1; i < 16; i++){
-    //     r[i] = bytes[i-1];
-    // }
-
     for(let i = 15; i >= 1; i--){
         r[i] = bytes[i-1];
     }
-
-    // console.log("ПЕРВЫЙ ЦИКЛ ЛОЛ ", HexOutput(r), " ", HexOutput(bytes));
     for(let i = 0; i <16; i++){
         a15 ^= this.GaloisMult(constants1[i], bytes[i]);
         
     }
-    
     r[0] = a15;
     return r;
 }
 
-    L(bytes: number[]){
-        let result: number[] = bytes.slice();
-        // let result: number[];
+    L(bytes: Buffer){
+        let result: Buffer = bytes.slice();
         for(let i = 0; i < 16; i++){
             result = this.GOSTR(result);
         }
         return result;
     }
     
-    S (bytes: number[]){
-        let result: number[]=[];
+    S (bytes: Buffer){
+        let result: Buffer = Buffer.alloc(0);
         for(let i:number=0; i<bytes.length;i++){
-            result.push(tabl_notlin[bytes[i]]);
+            result = Buffer.concat([result, Buffer.from([tabl_notlin[bytes[i]]])]);
         }
         while(result.length < 16){
-            result.unshift(0);
+            result = Buffer.concat([Buffer.from([0]), result]);
         }
         return result;
     }
 
-    GOSTR_rev(a: number[]){
+    GOSTR_rev(a: Buffer){
 	    let a_0: number;
 	    a_0 = 0;
-	    let r_inv: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0];
-	    // for (let i = 0; i < 15; i++)
-	    // {
-		//     r_inv[i+1] = a[i];
-	    // }
+	    let r_inv: Buffer = Buffer.from([0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0]);
         for(let i = 0; i < 15; i++){
             r_inv[i] = a[i+1];
         }
@@ -253,22 +191,21 @@ export class Kuznec{
 	    return r_inv;
     }
 
-    L_rev (bytes: number[]){
+    L_rev (bytes: Buffer){
 	
-        let res: number[] = bytes.slice();
+        let res: Buffer = bytes.slice();
 
         for(let j = 0; j < 16; j++){
             res = this.GOSTR_rev(res);
-            // console.log(HexOutput(res), " ", j);
         }
         return res;	
     }
 
-    S_rev (bytes: number[]){
+    S_rev (bytes: Buffer){
         while(bytes.length < 16){
-            bytes.push(0);
+            bytes = Buffer.concat([bytes, Buffer.from([0])]);
         }
-        let result: number[]=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let result: Buffer=Buffer.from([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         for(let i:number=0; i<16;i++){
             result[i] = tabl_notlin.indexOf(bytes[i]);
         }
@@ -276,25 +213,5 @@ export class Kuznec{
     }
 }
 export function HexInput(byte:string){
-
-    //let j:number = 0;
-    let byte_num: number[]=[];
-    // Дописанная часть с тообой
-    let temp:string[] = byte.split(' ');
-    for(let k:number=0;k<temp.length;k++){
-        if(temp[k].length < 2){
-            temp[k] = "0" + temp[k];    
-        }
-    }
-    byte = temp.join('');
-    //сам
-    for(let i:number=0;i<byte.length;i+=2){
-        if(byte[i] !== undefined && byte[i + 1] !== undefined){
-            let B_s:number = parseInt(byte[i] + byte[i+1], 16);
-            byte_num.push(B_s);
-        }
-    }
-    while(byte_num.length < 16){
-        byte_num.unshift(0);
-    }
-    return(byte_num);}
+    return(Buffer.from(byte.replace(/\s+/g, ''), 'hex'));
+}
