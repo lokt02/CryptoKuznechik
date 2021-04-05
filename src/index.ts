@@ -5,9 +5,9 @@ kuz.KeyGen(HexInput("7766554433221100FFEEDDCCBBAA9988EFCDAB89674523011032547698B
 
 const fs = require('fs');
 let inputString: string = fs.readFileSync("input.txt", "utf8");
-var encrypted: Buffer[] = kuz.SimpleReplacementEncrypt(inputString);
+var encrypted: Buffer[] = kuz.ECB_Encrypt(inputString);
 
-let result: string = kuz.Decrypt(encrypted);
+let result: string = kuz.ECB_Decrypt(encrypted);
 // console.log(result);
 for(let i = 0; i < result.length; i++){
     if(inputString[i] != result[i]){

@@ -25,9 +25,10 @@ export class Kuznec{
 
     constructor(){
         this.iterKey = [];
+        this.C = [];
     };
 
-    SimpleReplacementEncrypt(inputString:string){
+    ECB_Encrypt(inputString:string){
         let block: string[] = [];
         for(let i = 0; i < inputString.length; i+=16){
             block.push(inputString.slice(i, i + 16));
@@ -41,7 +42,7 @@ export class Kuznec{
         return encrypted;
     }
 
-    Decrypt(encrypted:Buffer[]){
+    ECB_Decrypt(encrypted:Buffer[]){
         let decrypted: Buffer[] = [];
         for(let i = 0; i < encrypted.length; i++){
             decrypted.push(this.Decryption(encrypted[i]));
