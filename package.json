@@ -1,6 +1,6 @@
 {
   "name": "cryptokuznechik",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "An npm package that provides cryptography russian algorithm 'kuznechik' (GOST 34.12-2018)",
   "main": "lib/kuznec.js",
   "types": "lib",
