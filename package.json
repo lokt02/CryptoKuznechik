@@ -1,8 +1,8 @@
 {
   "name": "cryptokuznechik",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.0.5",
+  "description": "An npm package that provides cryptography russian algorithm 'kuznechik' (GOST 34.12-2018)",
+  "main": "kuznec.js",
   "dependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
@@ -18,16 +18,29 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "build": "tsc index.ts"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lokt02/CryptoKuznechik.git"
   },
-  "author": "",
+  "author": "lokt02",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lokt02/CryptoKuznechik/issues"
   },
-  "homepage": "https://github.com/lokt02/CryptoKuznechik#readme"
+  "homepage": "https://github.com/lokt02/CryptoKuznechik#readme",
+  "keywords": [
+    "cryptography",
+    "grasshopper",
+    "symmetric",
+    "encryption",
+    "russian",
+    "cryptography",
+    "kuznechik",
+    "GOST",
+    "34.12-2018",
+    "34.12-2018"
+  ]
 }
