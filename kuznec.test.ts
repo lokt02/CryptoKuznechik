@@ -1,4 +1,4 @@
-import {Kuznec, HexInput} from "./kuznec";
+import {Kuznec, HexInput} from "./lib/kuznec";
 
 const kuznec = new Kuznec();
 
