@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "ts-node index.ts",
+    "start": "ts-node src/index.ts",
     "build": "tsc -p ."
   },
   "repository": {
@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/lokt02/CryptoKuznechik#readme",
   "keywords": [
-    "cryptography",
     "grasshopper",
     "symmetric",
     "encryption",
@@ -42,6 +41,12 @@
     "kuznechik",
     "GOST",
     "34.12-2018",
-    "34.12-2018"
+    "ECB",
+    "Crypto",
+    "128bit",
+    "encryption",
+    "encrypt",
+    "secure",
+    "security"
   ]
 }
