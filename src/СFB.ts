@@ -25,7 +25,12 @@ for(let i:number = 0; i< numbl; i++){
     }
     ctr=temp.slice();
 }
-
+if(enterbuf.length%16!=0){
+    gamma=kuz.Encryption(ctr);
+    for(let j:number=0;j<enterbuf.length%16;j++){
+    out[16*numbl+j]=gamma[j]^enterbuf[16*numbl+j]; 
+}
+}
 console.log(enterbuf);
 console.log(out);
 
@@ -41,5 +46,10 @@ for(let i:number = 0; i< numbl; i++){
     }
     ctr=temp.slice();
 }
-
+if(out.length%16!=0){
+    gamma=kuz.Encryption(ctr);
+    for(let j:number=0;j<out.length%16;j++){
+    out[16*numbl+j]=gamma[j]^out[16*numbl+j]; 
+}
+}
 console.log(dec);
