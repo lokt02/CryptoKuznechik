@@ -14,7 +14,7 @@ To use this package firstly you need to choose one of the encryption mods:
 ### ECB
 For ECB you need to import class ECB from package:
 ```
-import {ECB} from './cryptokuznechik';
+import {ECB} from 'cryptokuznechik';
 ```
  
 
