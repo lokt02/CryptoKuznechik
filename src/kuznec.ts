@@ -28,33 +28,6 @@ export class Kuznec{
         this.C = [];
     };
 
-    ECB_Encrypt(inputString:string){
-        let block: string[] = [];
-        for(let i = 0; i < inputString.length; i+=16){
-            block.push(inputString.slice(i, i + 16));
-        }   
-
-        var encrypted: Buffer[] = []
-        for(let i = 0; i < block.length; i++){
-            var buffer: Buffer = Buffer.from(block[i], 'utf-8');
-            encrypted.push(this.Encryption(buffer));
-        }
-        return encrypted;
-    }
-
-    ECB_Decrypt(encrypted:Buffer[]){
-        let decrypted: Buffer[] = [];
-        for(let i = 0; i < encrypted.length; i++){
-            decrypted.push(this.Decryption(encrypted[i]));
-        }
-        let result: string = '';
-        for(let i = 0; i < decrypted.length; i++){
-            result += decrypted[i].toString('utf-8');
-        }
-        result = result.split('\0').join('');
-        return result;
-    }
-
     GaloisMult(value1:number, value2:number){
     let gm: number = 0;
     let hi_bit: number;
@@ -138,7 +111,15 @@ export class Kuznec{
         return key;
     }
 
-    KeyGen(masterkey: Buffer){
+    KeyGen(){
+        let temp: number[] = [];
+        for(let i = 0; i < 32; ++i){
+            temp.push(Math.floor(Math.random() * 255))
+        }
+        this.GetKeys(Buffer.from(temp));
+    }
+
+    GetKeys(masterkey: Buffer){
         let key1: Buffer = Buffer.alloc(16); let key2: Buffer = Buffer.alloc(16);
         for(let i = 0; i < 16; i++){
             key1[i] = masterkey[i];

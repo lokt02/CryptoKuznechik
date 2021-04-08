@@ -13,7 +13,8 @@ export declare class Kuznec {
     Encryption(plaintext: Buffer): Buffer;
     ConstGen(): Buffer[];
     GOSTF(key1: Buffer, key2: Buffer, iter_const: Buffer): Buffer[];
-    KeyGen(masterkey: Buffer): Buffer[];
+    KeyGen(): void;
+    GetKeys(masterkey: Buffer): Buffer[];
     GOSTR(bytes: Buffer): Buffer;
     L(bytes: Buffer): Buffer;
     S(bytes: Buffer): Buffer;

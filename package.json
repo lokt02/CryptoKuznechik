@@ -1,25 +1,25 @@
 {
   "name": "cryptokuznechik",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "An npm package that provides cryptography russian algorithm 'kuznechik' (GOST 34.12-2018)",
   "main": "lib/kuznec.js",
   "types": "lib",
   "dependencies": {
+  },
+  "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
     "@babel/preset-typescript": "^7.13.0",
-    "babel-jest": "^26.6.3",
-    "ts-node": "^9.1.1"
-  },
-  "devDependencies": {
     "@types/jest": "^26.0.21",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "babel-jest": "^26.6.3",
+    "ts-node": "^9.1.1"
   },
   "scripts": {
     "test": "jest",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/sample.ts",
     "build": "tsc -p ."
   },
   "repository": {
@@ -42,7 +42,7 @@
     "GOST",
     "34.12-2018",
     "ECB",
-    "Crypto",
+    "crypto",
     "128bit",
     "encryption",
     "encrypt",
