@@ -12,6 +12,11 @@ export class ECB{
         return this.kuz.iterKey;
     }
 
+    SetKeys(keys: Buffer[]){
+        this.kuz.iterKey = keys;
+        return this.kuz.iterKey;
+    }
+
     Encrypt(inputString:string){
         let block: string[] = [];
         for(let i = 0; i < inputString.length; i+=16){
