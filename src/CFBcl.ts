@@ -2,11 +2,14 @@ import { Kuznec,HexInput} from './kuznec';
 
 export class CFB{
     kuz: Kuznec;
-    initv: string;
-    constructor(initv:string){
+    initv: Buffer;
+    constructor(){
         this.kuz = new Kuznec();
         this.kuz.KeyGen();
-        this.initv=initv;
+        this.initv = Buffer.alloc(16);
+        for(let i: number=0; i<16; i++){
+            this.initv[i] = Math.floor(Math.random() * 255);
+        }
     }
     Encrypt(entstri: Buffer){
         
@@ -16,7 +19,7 @@ export class CFB{
         let numbl: number = entstri.length/16;
         let gamma: Buffer= Buffer.alloc(16);
         let out : Buffer=Buffer.alloc(entstri.length);
-        ctr=HexInput(this.initv.slice());
+        ctr=this.initv.slice();
     
         for(let i:number = 0; i< numbl; i++){
         gamma = this.kuz.Encryption(ctr);
@@ -40,7 +43,7 @@ export class CFB{
     Decrypt(out:Buffer){
                 
         let ctr : Buffer =Buffer.alloc(this.initv.length);
-        ctr=HexInput(this.initv.slice());
+        ctr=this.initv.slice();
         let numbl: number = out.length/16;
         let dec:Buffer = Buffer.alloc(out.length);
         let gamma: Buffer= Buffer.alloc(16);
