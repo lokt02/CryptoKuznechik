@@ -8,54 +8,57 @@ export class CFB{
         this.kuz.KeyGen();
         this.initv=initv;
     }
-    Encrypt(input: string){
-        let inputbuf:Buffer = Buffer.from(input);
-        let ctr : Buffer =Buffer.alloc(input.length);
-        let numbl: number = input.length/16;
-        let gamma: Buffer= Buffer.alloc(16);
-        let out : Buffer=Buffer.alloc(input.length);
-        ctr=HexInput(this.initv.slice());
-        for(let i:number = 0; i< numbl; i++){
-            gamma = this.kuz.Encryption(ctr);
-            let temp:Buffer = Buffer.alloc(16);
-        for(let j:number = 0; j<16;j++){
-            out[16*i+j]=gamma[j]^inputbuf[16*i+j];
-            temp[j]=out[16*i+j];
-        }
-        ctr=temp.slice();
-    }
-        if(input.length%16!=0){
-            gamma=this.kuz.Encryption(ctr);
-            for(let j:number=0;j<input.length%16;j++){
-                out[16*numbl+j]=gamma[j]^inputbuf[16*numbl+j]; 
-            };
-        };
-        return out;
-    }
-    Decrypt(encripted: string){
+    Encrypt(entstri: Buffer){
         
-        let inputbuf:Buffer = Buffer.from(encripted);
-        let ctr : Buffer =Buffer.alloc(encripted.length);
-        let numbl: number = encripted.length/16;
+        this.kuz.KeyGen();
+    
+        let ctr : Buffer =Buffer.alloc(this.initv.length);
+        let numbl: number = entstri.length/16;
         let gamma: Buffer= Buffer.alloc(16);
-        let out : Buffer=Buffer.alloc(encripted.length);
+        let out : Buffer=Buffer.alloc(entstri.length);
         ctr=HexInput(this.initv.slice());
+    
         for(let i:number = 0; i< numbl; i++){
-            gamma = this.kuz.Encryption(ctr);
-            let temp:Buffer = Buffer.alloc(16);
+        gamma = this.kuz.Encryption(ctr);
+        let temp:Buffer = Buffer.alloc(16);
         for(let j:number = 0; j<16;j++){
-            out[16*i+j]=gamma[j]^inputbuf[16*i+j];
+            out[16*i+j]=gamma[j]^entstri[16*i+j];
+            temp[j]=out[16*i+j];
+        }
+        ctr=temp.slice();
+        }
+        if(entstri.length%16!=0){
+        gamma=this.kuz.Encryption(ctr);
+        for(let j:number=0;j<entstri.length%16;j++){
+        out[16*numbl+j]=gamma[j]^entstri[16*numbl+j]; 
+    }
+    }
+    
+    return out;
+    }
+    
+    Decrypt(out:Buffer){
+                
+        let ctr : Buffer =Buffer.alloc(this.initv.length);
+        ctr=HexInput(this.initv.slice());
+        let numbl: number = out.length/16;
+        let dec:Buffer = Buffer.alloc(out.length);
+        let gamma: Buffer= Buffer.alloc(16);
+        for(let i:number = 0; i< numbl; i++){
+        gamma = this.kuz.Encryption(ctr);
+        let temp:Buffer = Buffer.alloc(16);
+        for(let j:number = 0; j<16;j++){
+            dec[16*i+j]=gamma[j]^out[16*i+j];
             temp[j]=out[16*i+j];
         }
         ctr=temp.slice();
     }
-        if(encripted.length%16!=0){
-            gamma=this.kuz.Encryption(ctr);
-            for(let j:number=0;j<encripted.length%16;j++){
-                out[16*numbl+j]=gamma[j]^inputbuf[16*numbl+j]; 
-            };
-        };
-        return out;
-
+    if(out.length%16!=0){
+        gamma=this.kuz.Encryption(ctr);
+        for(let j:number=0;j<out.length%16;j++){
+        dec[16*numbl+j]=gamma[j]^out[16*numbl+j]; 
+    }
+    }
+    return dec;
     }
 }
