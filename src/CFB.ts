@@ -1,4 +1,4 @@
-import { Kuznec,HexInput} from './kuznec';
+import { Kuznec} from './kuznec';
 
 export class CFB{
     kuz: Kuznec;
