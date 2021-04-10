@@ -23,6 +23,24 @@ export class CTR{
 
     }
     Encrypt(entstri: Buffer){
+        let ctr:Buffer = Buffer.alloc(16).fill(0);
+        ctr= this.NewCTR(ctr,0);
+        let numbl = entstri.length/16;
+        let out: Buffer = Buffer.alloc(entstri.length);
+        for(let i: number=0; i<numbl; ++i){
+            let temp = this.kuz.Encryption(ctr);
+            for(let j: number = 0; j<16;j++){
+                out[i*16+j]= temp[j]^entstri[i*16+j];
+            }
+            ctr=this.NewCTR(ctr, i+1);
+        }
+        if(entstri.length%16!=0){
+            let temp = this.kuz.Encryption(ctr);
+            for(let j: number = 0; j<16;j++){
+                out[numbl*16+j]= temp[j]^entstri[numbl*16+j];
+            }
+        }
+        return out;
     }
     
     Decrypt(out:Buffer){
