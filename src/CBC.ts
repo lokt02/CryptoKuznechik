@@ -11,6 +11,7 @@ export class CBC{
             this.initv[i] = Math.floor(Math.random() * 255);
         }
     }
+    
     Encrypt(entstri: Buffer){
         let numbl = entstri.length/16;
         let out: Buffer = Buffer.alloc(entstri.length);
