@@ -18,7 +18,7 @@ export class CBC{
         let ctr : Buffer =Buffer.alloc(this.initv.length);
         let numbl: number = entstri.length/16;
         let gamma: Buffer= Buffer.alloc(16);
-        let out : Buffer;
+        let out : Buffer = Buffer.alloc(0);
         ctr=this.initv.slice();
     
         for(let i:number = 0; i< numbl; i++){
@@ -51,7 +51,7 @@ export class CBC{
         let ctr : Buffer =Buffer.alloc(this.initv.length);
         ctr=this.initv.slice();
         let numbl: number = out.length/16;
-        let dec:Buffer;
+        let dec:Buffer = Buffer.alloc(0);
         let gamma: Buffer= Buffer.alloc(16);
         for(let i:number = 0; i< numbl; i++){
         gamma = this.kuz.Encryption(ctr);
