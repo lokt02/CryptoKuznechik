@@ -13,35 +13,27 @@ export class CBC{
     }
     Encrypt(entstri: Buffer){
         let numbl:number = Math.floor(entstri.length/16);
-        let out: Buffer = Buffer.alloc(entstri.length);
+        numbl = entstri.length%16 !== 0 ? (numbl+1): numbl; 
+        let out: Buffer = Buffer.alloc(numbl*16);
+
         let tempv: Buffer = Buffer.from(this.initv);       
         for(let j = 0; j<numbl;j++){
-            let temp=Buffer.alloc(16);
-            for(let i: number =0; i<16;i++){
+            let len = entstri.length-16*j;
+            if(len>=16){
+            len =16;}
+
+            let temp=Buffer.alloc(len);
+            for(let i: number =0; i<len;i++){
                 temp[i]=entstri[j*16+i];
             }
             
-            for(let i: number =0; i<16;i++){
+            for(let i: number =0; i<len;i++){
                 temp[i]=temp[i]^tempv[i];
             }
             temp=this.kuz.Encryption(temp);
             tempv= Buffer.from(temp);
             for(let i: number =0;i<16;i++){
                 out[16*j+i]=temp[i];
-            }
-        }
-        if(entstri.length%16!=0){
-            let temp=Buffer.alloc(entstri.length%16);
-            for(let i: number =0; i<entstri.length%16;i++){
-                temp[i]=entstri[numbl*16+i];
-            }
-            for(let i: number =0; i<entstri.length%16;i++){
-                temp[i]=temp[i]^tempv[i];
-            }
-            temp=this.kuz.Encryption(temp);
-            tempv= Buffer.from(temp)
-            for(let i: number =0;i<entstri.length%16;i++){
-                out[16*numbl+i]=temp[i];
             }
         }
         return out;
@@ -69,20 +61,9 @@ export class CBC{
             }
             tempv = Buffer.from(temp1);
         }
-        if(entstri.length%16!=0){
-            let temp:Buffer= Buffer.alloc(entstri.length%16);
-            for(let i: number =0;i<entstri.length%16;i++){
-                temp[i]=entstri[numbl*16+i];
-            }
-            temp=this.kuz.Decryption(temp);
-            for(let i: number=0;i<entstri.length%16;i++){
-                temp[i]=temp[i]^tempv[i];
-            }
-            for(let i: number=0;i<entstri.length%16;i++){
-                out[16*numbl+i]=temp[i];
-            }
-            
-        }
+        console.log(entstri.length%16);
         return out;
+    
+
     }
 }
