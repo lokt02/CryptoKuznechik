@@ -11,39 +11,38 @@ export class CBC{
             this.initv[i] = Math.floor(Math.random() * 255);
         }
     }
-    
     Encrypt(entstri: Buffer){
         let numbl = entstri.length/16;
         let out: Buffer = Buffer.alloc(entstri.length);
-        let tempvec : Buffer = Buffer.from(this.initv);
-        for(let i:number=0;i<numbl;i++){
-            let temp :Buffer = Buffer.alloc(16);
-            for(let j:number=0;j<16;j++){
-                temp[j]=entstri[i*16+j];
+        let tempv: Buffer = Buffer.from(this.initv);
+        
+        for(let j = 0; j<numbl;j++){
+            let temp=Buffer.alloc(16);
+            for(let i: number =0; i<16;i++){
+                temp[i]=entstri[j*16+i];
             }
-            for(let j:number=0;j<16;j++){
-                temp[j]=temp[j]^tempvec[j];
+            for(let i: number =0; i<16;i++){
+                temp[i]=temp[i]^tempv[i];
             }
             temp=this.kuz.Encryption(temp);
-            tempvec=temp.slice();
-            for(let j:number=0;j<16;j++){
-                out[i*16+j]=temp[j];
+            tempv= Buffer.from(temp)
+            for(let i: number =0;i<16;i++){
+                out[16*j+i]=temp[i];
             }
         }
         if(entstri.length%16!=0){
-            let temp :Buffer = Buffer.alloc(16);
-            for(let j:number=0;j<16;j++){
-                temp[j]=entstri[numbl*16+j];
+            let temp=Buffer.alloc(entstri.length%16);
+            for(let i: number =0; i<entstri.length%16;i++){
+                temp[i]=entstri[numbl*16+i];
             }
-            for(let j:number=0;j<16;j++){
-                temp[j]=temp[j]^tempvec[j];
+            for(let i: number =0; i<entstri.length%16;i++){
+                temp[i]=temp[i]^tempv[i];
             }
             temp=this.kuz.Encryption(temp);
-            tempvec=temp.slice();
-            for(let j:number=0;j<16;j++){
-                out[numbl*16+j]=temp[j];
+            tempv= Buffer.from(temp)
+            for(let i: number =0;i<entstri.length%16;i++){
+                out[16*numbl+i]=temp[i];
             }
-
         }
         return out;
     }
@@ -51,21 +50,35 @@ export class CBC{
     Decrypt(entstri:Buffer){
         let numbl = entstri.length/16;
         let out: Buffer = Buffer.alloc(entstri.length);
-        let tempvec : Buffer = Buffer.from(this.initv);
-        for(let i:number=0;i<numbl;i++){
-            let temp :Buffer = Buffer.alloc(16);
-            for(let j:number=0;j<16;j++){
-                temp[j]=entstri[i*16+j];
+        let tempv: Buffer = Buffer.from(this.initv);
+        for(let j: number= 0;j< numbl;j++){
+            
+            let temp:Buffer= Buffer.alloc(16);
+            for(let i: number =0;i<16;i++){
+                temp[i]=entstri[j*16+i];
             }
             temp=this.kuz.Decryption(temp);
-            let temp1: Buffer = Buffer.from(temp);
-            for(let j:number=0;j<16;j++){
-                temp[j]=temp[j]^tempvec[j];
+            for(let i: number=0;i<16;i++){
+                temp[i]=temp[i]^tempv[i];
             }
-            tempvec=temp1.slice();
-            for(let j:number=0;j<16;j++){
-                out[i*16+j]=temp[j];
+            for(let i: number=0;i<16;i++){
+                out[16*j+i]=temp[i];
             }
+        }
+        if(entstri.length%16!=0){
+            
+            let temp:Buffer= Buffer.alloc(entstri.length%16);
+            for(let i: number =0;i<entstri.length%16;i++){
+                temp[i]=entstri[numbl*16+i];
+            }
+            temp=this.kuz.Decryption(temp);
+            for(let i: number=0;i<entstri.length%16;i++){
+                temp[i]=temp[i]^tempv[i];
+            }
+            for(let i: number=0;i<entstri.length%16;i++){
+                out[16*numbl+i]=temp[i];
+            }
+            
         }
         return out;
     }
