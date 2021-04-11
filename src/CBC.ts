@@ -18,7 +18,6 @@ export class CBC{
         entstri[entstri.length-1]=length;
         length= entstri.length%16;
         numbl = entstri.length%16 !== 0 ? (numbl+1): numbl;
-        console.log('1st ', entstri); 
         let out: Buffer = Buffer.alloc(numbl*16);
 
         let tempv: Buffer = Buffer.from(this.initv);       
@@ -41,7 +40,6 @@ export class CBC{
                 out[16*j+i]=temp[i];
             }
         }
-        
         return out;
     }
     
@@ -56,9 +54,7 @@ export class CBC{
                 temp[i]=entstri[j*16+i];
                 temp1[i]=entstri[j*16+i];
             }
-            
             temp=this.kuz.Decryption(temp);
-            console.log(temp);
             for(let i: number=0;i<16;i++){
                 temp[i]=temp[i]^tempv[i];
             }
@@ -68,8 +64,6 @@ export class CBC{
             }
             tempv = Buffer.from(temp1);
         }
-        console.log('SMOTRI SUDA',(out));
-        console.log(out.length + out[out.length-16]-32);
         out = out.slice(0,out.length + out[out.length-16]-32);
         return out;
     }

@@ -43,7 +43,7 @@ export class CTR{
         return out;
     }
     
-    Decrypt(out:Buffer){
+    Decrypt(entstri:Buffer){
         let ctr:Buffer = Buffer.alloc(16).fill(0);
         ctr= this.NewCTR(ctr,0);
         let numbl = entstri.length/16;
