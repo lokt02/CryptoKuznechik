@@ -26,3 +26,9 @@ let ofb:OFB = new OFB();
 let ofb_enc: Buffer = ofb.Encrypt(Buffer.from(inputString));
 let ofb_res: string = ofb.Decrypt(ofb_enc).toString();
 console.log("OFB testing... ", ofb_res === inputString, ofb_res.length, inputString.length);
+
+let kuz: Kuznec = new Kuznec();
+let block: Buffer = Buffer.from('plainTextBlock12');
+let encrypted_block: Buffer = kuz.Encryption(block);
+let decrypted_block: Buffer = kuz.Decryption(encrypted_block);
+console.log(decrypted_block.toString('utf-8')); //// plainTextBlock12

@@ -120,6 +120,22 @@ let ofb_enc: Buffer = ofb.Encrypt(buffer);
 let result: Buffer = ofb.Decrypt(ofb_enc);
 ```
 
+## Other
+You also can create your own encryption mode with Kuznec:
+```
+import {Kuznec} from 'cryptokuznechik'
+
+let kuz: Kuznec = new Kuznec();
+let block: Buffer = Buffer.from('plainTextBlock12');
+let encrypted_block: Buffer = kuz.Encryption(block);
+let decrypted_block: Buffer = kuz.Decryption(encrypted_block);
+console.log(decrypted_block.toString('utf-8')); //// plainTextBlock12
+
+```
+
 # Authors
     * lokt02
     * KostylevVadim
+
+# Special thanks
+    * PotatoHD1
