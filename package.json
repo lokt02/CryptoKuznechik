@@ -6,16 +6,16 @@
   "types": "lib",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
     "@babel/preset-typescript": "^7.13.0",
-    "@types/jest": "^26.0.21",
+    "@types/jest": "^26.0.22",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
     "package-preview": "^4.0.0",
     "ts-jest": "^26.5.4",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "scripts": {
     "test": "jest",
