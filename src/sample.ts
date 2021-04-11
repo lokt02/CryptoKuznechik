@@ -1,13 +1,12 @@
-import {Kuznec, HexInput} from './kuznec';
+import {ECB} from './ECB';
 
-var kuz:Kuznec = new Kuznec();
-kuz.KeyGen(HexInput("7766554433221100FFEEDDCCBBAA9988EFCDAB89674523011032547698BADCFE"));
+var ecb:ECB = new ECB();
 
 const fs = require('fs');
 let inputString: string = fs.readFileSync("input.txt", "utf8");
-var encrypted: Buffer[] = kuz.ECB_Encrypt(inputString);
+var encrypted: Buffer[] = ecb.Encrypt(inputString);
 
-let result: string = kuz.ECB_Decrypt(encrypted);
+let result: string = ecb.Decrypt(encrypted);
 // console.log(result);
 for(let i = 0; i < result.length; i++){
     if(inputString[i] != result[i]){
