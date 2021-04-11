@@ -26,6 +26,7 @@ export class Kuznec{
     constructor(){
         this.iterKey = [];
         this.C = [];
+        this.KeyGen();
     };
 
     GaloisMult(value1:number, value2:number){

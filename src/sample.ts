@@ -1,4 +1,5 @@
-import {ECB} from './ECB';
+// import {ECB} from './ECB';
+import {Kuznec, ECB, CBC, CFB, CTR, OFB} from './package'
 
 var ecb:ECB = new ECB();
 
@@ -8,9 +9,4 @@ var encrypted: Buffer[] = ecb.Encrypt(inputString);
 
 let result: string = ecb.Decrypt(encrypted);
 
-for(let i = 0; i < result.length; i++){
-    if(inputString[i] != result[i]){
-        console.log(result[i] === '\0')
-    }
-}
 console.log(result === inputString, result.length, inputString.length);
