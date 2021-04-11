@@ -30,4 +30,5 @@ let enc3= test3.Encrypt(enterbuf);
 console.log(test3.Encrypt(enterbuf));
 console.log(test3.Decrypt(enc3));
 console.log(enc3.toString());
+
 console.log(test3.Decrypt(enc3).toString());
