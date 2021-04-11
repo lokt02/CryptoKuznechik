@@ -110,7 +110,6 @@ export class Kuznec{
         key.push(outKey2);
         return key;
     }
-
     KeyGen(){
         let temp: number[] = [];
         for(let i = 0; i < 32; ++i){
@@ -118,7 +117,6 @@ export class Kuznec{
         }
         this.GetKeys(Buffer.from(temp));
     }
-
     GetKeys(masterkey: Buffer){
         let key1: Buffer = Buffer.alloc(16); let key2: Buffer = Buffer.alloc(16);
         for(let i = 0; i < 16; i++){
