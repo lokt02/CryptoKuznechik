@@ -8,7 +8,11 @@ To install this package enter command below to terminal:
 
 # Usage
 To use this package firstly you need to choose one of the encryption mods:
-* ECB (yes, only this but soon we will make more)
+* ECB
+* OFB
+* CFB
+* CTR
+* OFB
 
 
 ### ECB
@@ -29,11 +33,92 @@ Now you can encrypt and decrypt messages:
 ```
 const fs = require('fs');
 let inputString: string = fs.readFileSync("input.txt", "utf8");
-var encrypted: Buffer[] = ecb.Encrypt(inputString);
+let encrypted: Buffer[] = ecb.Encrypt(inputString);
 
 let result: string = ecb.Decrypt(encrypted);
 ```
 
+### CBC
+For CBC you need to import class CBC from package:
+```
+import {CBC} from 'cryptokuznechik';
+```
+ 
+
+Next create an instance of CBC:
+```
+let cbc:CBC = new CBC();
+```
+
+
+
+Now encrypt and decrypt messages:
+```
+let buffer: Buffer = Buffer.from(inputString);
+let cbc_enc: Buffer = cbc.Encrypt(buffer);
+let result: Buffer = cbc.Decrypt(cbc_enc);
+```
+
+### CFB
+For CFB you need to import class CFB from package:
+```
+import {CFB} from 'cryptokuznechik';
+```
+ 
+
+Next create an instance of CFB:
+```
+let cfb:CFB = new CFB();
+```
+
+
+
+Now encrypt and decrypt messages:
+```
+let cfb_enc: Buffer = cfb.Encrypt(buffer);
+let result: Buffer = cfb.Decrypt(cfb_enc);
+```
+
+### CTR
+For CTR you need to import class CTR from package:
+```
+import {CTR} from 'cryptokuznechik';
+```
+ 
+
+Next create an instance of CTR:
+```
+let ctr:CTR = new CTR();
+```
+
+
+
+Now encrypt and decrypt messages:
+```
+let ctr_enc: Buffer = ctr.Encrypt(buffer);
+let result: Buffer = ctr.Decrypt(ctr_enc);
+```
+
+
+### OFB
+For OFB you need to import class OFB from package:
+```
+import {OFB} from 'cryptokuznechik';
+```
+ 
+
+Next create an instance of OFB:
+```
+let ofb:OFB = new OFB();
+```
+
+
+
+Now encrypt and decrypt messages:
+```
+let ofb_enc: Buffer = ofb.Encrypt(buffer);
+let result: Buffer = ofb.Decrypt(ofb_enc);
+```
 
 # Authors
     * lokt02

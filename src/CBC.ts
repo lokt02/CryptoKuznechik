@@ -10,6 +10,14 @@ export class CBC{
             this.initv[i] = Math.floor(Math.random() * 255);
         }
     }
+    GetKeys(){
+        return this.kuz.iterKey;
+    }
+
+    SetKeys(keys: Buffer[]){
+        this.kuz.iterKey = keys;
+        return this.kuz.iterKey;
+    }
     Encrypt(entstri: Buffer){
         let length: number = entstri.length%16;
         entstri = Buffer.concat([entstri, Buffer.alloc(17-length).fill(0)]);

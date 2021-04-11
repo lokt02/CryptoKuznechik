@@ -10,10 +10,15 @@ export class CFB{
             this.initv[i] = Math.floor(Math.random() * 255);
         }
     }
+    GetKeys(){
+        return this.kuz.iterKey;
+    }
+
+    SetKeys(keys: Buffer[]){
+        this.kuz.iterKey = keys;
+        return this.kuz.iterKey;
+    }
     Encrypt(entstri: Buffer){
-        
-        this.kuz.KeyGen();
-    
         let ctr : Buffer =Buffer.alloc(this.initv.length);
         let numbl: number = entstri.length/16;
         let gamma: Buffer= Buffer.alloc(16);
@@ -39,8 +44,7 @@ export class CFB{
     return out;
     }
     
-    Decrypt(out:Buffer){
-                
+    Decrypt(out:Buffer){    
         let ctr : Buffer =Buffer.alloc(this.initv.length);
         ctr=this.initv.slice();
         let numbl: number = out.length/16;

@@ -5,7 +5,6 @@ export class ECB{
 
     constructor(){
         this.kuz = new Kuznec();
-        this.kuz.KeyGen();
     }
 
     GetKeys(){

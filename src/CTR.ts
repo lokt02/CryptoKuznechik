@@ -10,6 +10,14 @@ export class CTR{
             this.initv[i] = Math.floor(Math.random() * 255);
         }
     }
+    GetKeys(){
+        return this.kuz.iterKey;
+    }
+
+    SetKeys(keys: Buffer[]){
+        this.kuz.iterKey = keys;
+        return this.kuz.iterKey;
+    }
     NewCTR(ctr: Buffer, x: number){
         let n:number = x;
         var arr = n.toString(16).replace(/\D/g, '0').split('').map(Number);
@@ -19,7 +27,6 @@ export class CTR{
             ctr[i+8]+=temp[i];
         }
         return ctr;
-
     }
     Encrypt(entstri: Buffer){
         let ctr:Buffer = Buffer.alloc(16).fill(0);
