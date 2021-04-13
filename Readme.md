@@ -138,4 +138,4 @@ console.log(decrypted_block.toString('utf-8')); //// plainTextBlock12
     * KostylevVadim
 
 # Special thanks
-    * PotatoHD1
+    * PotatoHD404
