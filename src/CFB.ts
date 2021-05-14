@@ -26,22 +26,22 @@ export class CFB{
         ctr=this.initv.slice();
     
         for(let i:number = 0; i< numbl; i++){
-        gamma = this.kuz.Encryption(ctr);
-        let temp:Buffer = Buffer.alloc(16);
-        for(let j:number = 0; j<16;j++){
-            out[16*i+j]=gamma[j]^entstri[16*i+j];
-            temp[j]=out[16*i+j];
-        }
-        ctr=temp.slice();
+            gamma = this.kuz.Encryption(ctr);
+            let temp:Buffer = Buffer.alloc(16);
+            for(let j:number = 0; j<16;j++){
+                out[16*i+j]=gamma[j]^entstri[16*i+j];
+                temp[j]=out[16*i+j];
+            }
+            ctr=temp.slice();
         }
         if(entstri.length%16!=0){
-        gamma=this.kuz.Encryption(ctr);
-        for(let j:number=0;j<entstri.length%16;j++){
-        out[16*numbl+j]=gamma[j]^entstri[16*numbl+j]; 
-    }
-    }
+            gamma=this.kuz.Encryption(ctr);
+            for(let j:number=0;j<entstri.length%16;j++){
+                out[16*numbl+j]=gamma[j]^entstri[16*numbl+j]; 
+            }
+        }
     
-    return out;
+        return out;
     }
     
     Decrypt(out:Buffer){    
@@ -58,13 +58,13 @@ export class CFB{
             temp[j]=out[16*i+j];
         }
         ctr=temp.slice();
-    }
-    if(out.length%16!=0){
-        gamma=this.kuz.Encryption(ctr);
-        for(let j:number=0;j<out.length%16;j++){
-        dec[16*numbl+j]=gamma[j]^out[16*numbl+j]; 
-    }
-    }
-    return dec;
+        }
+        if(out.length%16!=0){
+            gamma=this.kuz.Encryption(ctr);
+            for(let j:number=0;j<out.length%16;j++){
+                dec[16*numbl+j]=gamma[j]^out[16*numbl+j]; 
+            }
+        }
+        return dec;
     }
 }

@@ -33,9 +33,9 @@ Now you can encrypt and decrypt messages:
 ```typescript
 const fs = require('fs');
 let inputString: string = fs.readFileSync("input.txt", "utf8");
-let encrypted: Buffer[] = ecb.Encrypt(inputString);
+let encrypted: Buffer = ecb.Encrypt(Buffer.from(inputString));
 
-let result: string = ecb.Decrypt(encrypted);
+let result: Buffer = ecb.Decrypt(encrypted);
 ```
 
 ### CBC

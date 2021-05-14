@@ -3,8 +3,8 @@ const fs = require('fs');
 let inputString: string = fs.readFileSync("input.txt", "utf8");
 
 let ecb:ECB = new ECB();
-let encrypted: Buffer[] = ecb.Encrypt(inputString);
-let ecb_res: string = ecb.Decrypt(encrypted);
+let encrypted: Buffer = ecb.Encrypt(Buffer.from(inputString));
+let ecb_res: string = ecb.Decrypt(encrypted).toString().split('\0').join('');
 console.log("ECB testing... ", ecb_res === inputString, ecb_res.length, inputString.length);
 
 let cbc:CBC = new CBC();

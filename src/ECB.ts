@@ -16,30 +16,39 @@ export class ECB{
         return this.kuz.iterKey;
     }
 
-    Encrypt(inputString:string){
-        let block: string[] = [];
-        for(let i = 0; i < inputString.length; i+=16){
-            block.push(inputString.slice(i, i + 16));
-        }   
-
-        var encrypted: Buffer[] = []
-        for(let i = 0; i < block.length; i++){
-            var buffer: Buffer = Buffer.from(block[i], 'utf-8');
-            encrypted.push(this.kuz.Encryption(buffer));
+    Encrypt(input:Buffer){
+        let numbl: number = Math.floor(input.length/16);
+        let out: Buffer = Buffer.alloc((numbl+1)*16);
+        for(let i:number = 0; i< numbl; i++){
+            let temp:Buffer = Buffer.alloc(16);
+            temp = this.kuz.Encryption(input.slice(i*16,i*16 + 16))
+            for(let j:number = 0; j<16;j++){
+                out[16*i+j]=temp[j];
+            }
         }
-        return encrypted;
+        if(input.length%16!=0){
+            let temp:Buffer = Buffer.alloc(16);
+            temp = this.kuz.Encryption(input.slice(numbl*16,numbl*16 + input.length%16))
+            for(let j:number=0;j<16;j++){
+                out[16*numbl+j]=temp[j]; 
+            }
+        }
+        return out;
     }
 
-    Decrypt(encrypted:Buffer[]){
-        let decrypted: Buffer[] = [];
-        for(let i = 0; i < encrypted.length; i++){
-            decrypted.push(this.kuz.Decryption(encrypted[i]));
+    Decrypt(encrypted:Buffer){
+        let decrypted: Buffer = Buffer.alloc(encrypted.length);
+        let numbl: number = encrypted.length/16;
+        // for(let i = 0; i < encrypted.length; i++){
+        //     decrypted.push(this.kuz.Decryption(encrypted[i]));
+        // }
+        for(let i = 0; i < numbl; i++){
+            let temp: Buffer = Buffer.alloc(16);
+            temp = this.kuz.Decryption(encrypted.slice(i*16,i*16 + 16))
+            for(let j:number = 0; j<16;j++){
+                decrypted[16*i+j]=temp[j];
+            }
         }
-        let result: string = '';
-        for(let i = 0; i < decrypted.length; i++){
-            result += decrypted[i].toString('utf-8');
-        }
-        result = result.split('\0').join('');
-        return result;
+        return decrypted;
     }
 }
