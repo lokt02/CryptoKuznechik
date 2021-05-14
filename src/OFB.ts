@@ -25,8 +25,7 @@ export class OFB{
         let out : Buffer=Buffer.alloc(entstri.length);
         ctr=this.initv.slice();
     
-        for(let i:number = 0; i< numbl; i++){
-        
+        for(let i:number = 0; i< numbl; i++){        
         gamma = this.kuz.Encryption(ctr);
         let temp:Buffer = Buffer.from(ctr);
         for(let j:number = 0; j<16;j++){
@@ -35,13 +34,13 @@ export class OFB{
         ctr = this.kuz.Encryption(temp);
         }
         if(entstri.length%16!=0){
-        ctr = this.Encrypt(ctr);
-        gamma=this.kuz.Encryption(ctr);
-        for(let j:number=0;j<entstri.length%16;j++){
-        out[16*numbl+j]=gamma[j]^entstri[16*numbl+j]; 
-    }
-    }
-    return out;
+            ctr = this.Encrypt(ctr);
+            gamma=this.kuz.Encryption(ctr);
+            for(let j:number=0;j<entstri.length%16;j++){
+                out[16*numbl+j]=gamma[j]^entstri[16*numbl+j]; 
+            }
+        }
+        return out;
     }
     
     Decrypt(out:Buffer){
