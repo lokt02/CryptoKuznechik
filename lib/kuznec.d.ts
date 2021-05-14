@@ -3,8 +3,6 @@ export declare class Kuznec {
     C: Buffer[];
     iterKey: Buffer[];
     constructor();
-    ECB_Encrypt(inputString: string): Buffer[];
-    ECB_Decrypt(encrypted: Buffer[]): string;
     GaloisMult(value1: number, value2: number): number;
     XSL(plaintext: Buffer, j: number): Buffer;
     LrSrX(cipherText: Buffer, j: number): Buffer;
