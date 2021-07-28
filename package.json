@@ -28,7 +28,7 @@
     "url": "git+https://github.com/lokt02/CryptoKuznechik.git"
   },
   "author": "lokt02",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lokt02/CryptoKuznechik/issues"
   },
